@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sand Billing App</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;padding:15px;background:#eee}
+.card{background:white;padding:18px;border:1px solid #ccc;border-radius:8px;max-width:600px;margin:auto}
+h2{text-align:center}
+label{display:block;margin-top:12px;font-weight:bold}
+input{width:100%;box-sizing:border-box;padding:12px;margin-top:5px;font-size:16px}
+button{padding:12px;margin-top:15px;background:#1769aa;color:white;border:0;border-radius:5px;font-size:16px}
+@media print{.no-print{display:none}body{background:white}.card{border:0}}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>SAND BILL</h2>
+<p style="text-align:center">ఇసుక రవాణా బిల్లు</p>
+<label>బిల్లు నంబర్</label><input id="bill" placeholder="బిల్లు నంబర్">
+<label>తేదీ</label><input id="date" type="date">
+<label>డ్రైవర్ పేరు</label><input placeholder="డ్రైవర్ పేరు">
+<label>ఫోన్ నంబర్</label><input placeholder="ఫోన్ నంబర్">
+<label>వాహనం నంబర్</label><input placeholder="వాహనం నంబర్">
+<label>లోడ్ / పరిమాణం</label><input placeholder="పరిమాణం">
+<label>మొత్తం (₹)</label><input type="number" placeholder="మొత్తం">
+<div class="no-print">
+<button onclick="window.print()">బిల్లు ప్రింట్ / PDF</button>
+<button onclick="location.reload()">కొత్త బిల్లు</button>
+</div>
+</div>
+</body>
+  </html>
+  
