@@ -1,206 +1,105 @@
 <!DOCTYPE html>
-<html lang="te">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AP SAND MANAGEMENT SYSTEM</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  padding:12px;
-  background:#eee;
-  color:#000;
-  font-family:Arial,Helvetica,sans-serif;
+* {
+  box-sizing: border-box;
 }
 
-.form,.bill{
-  background:#fff;
-  max-width:750px;
-  margin:0 auto 18px;
-  padding:20px;
-  border:1px solid #ccc;
+body {
+  margin: 0;
+  padding: 12px;
+  background: #eeeeee;
+  color: #111111;
+  font-family: Arial, sans-serif;
 }
 
-h2{text-align:center;margin:0 0 8px;font-size:25px}
-
-label{
-  display:block;
-  font-weight:bold;
-  margin-top:12px;
+.header {
+  width: 100%;
+  background: white;
+  border: 2px solid #222;
+  padding: 18px 8px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-input,textarea{
-  width:100%;
-  padding:12px;
-  margin-top:5px;
-  font-size:16px;
-  border:1px solid #888;
-  border-radius:4px;
+.header h1 {
+  margin: 0;
+  font-size: clamp(20px, 5vw, 32px);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
+  color: #000;
 }
 
-button{
-  padding:12px 16px;
-  margin:12px 5px 0 0;
-  background:#1769aa;
-  color:white;
-  border:0;
-  border-radius:5px;
-  font-size:16px;
+.header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.billhead{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  padding:5px 0 10px;
-  border-bottom:2px solid #111;
+.form {
+  background: white;
+  border: 1px solid #999;
+  padding: 15px;
+  border-radius: 5px;
 }
 
-.gov-symbol{
-  width:24%;
-  max-width:100px;
-  height:auto;
-  object-fit:contain;
-  flex-shrink:0;
+.form h2 {
+  text-align: center;
+  font-size: 21px;
+  margin-top: 0;
 }
 
-.brand{
-  flex:1;
-  min-width:0;
-  text-align:center;
-  font-family:Arial,Helvetica,sans-serif;
-  font-weight:900;
-  line-height:1.05;
-  color:#000;
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
 }
 
-.brand-main{
-  font-size:clamp(30px,8vw,48px);
-  font-weight:900;
-  letter-spacing:-1px;
-  white-space:nowrap;
+input {
+  width: 100%;
+  padding: 11px;
+  margin-top: 5px;
+  border: 1px solid #777;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-.subtitle{
-  font-size:clamp(15px,4vw,23px);
-  font-weight:900;
-  letter-spacing:-.5px;
-  margin-top:3px;
-  white-space:nowrap;
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  background: #1558a6;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
 }
 
-.copy{
-  text-align:center;
-  font-family:monospace;
-  font-size:20px;
-  font-weight:400;
-  margin:8px 0 10px;
-}
-
-.demo{
-  text-align:center;
-  color:#a00030;
-  font-weight:bold;
-  font-size:11px;
-  margin:8px 0;
-}
-
-.line{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:8px;
-  padding:4px 0;
-  font-family:monospace;
-  font-size:clamp(13px,3.5vw,20px);
-  line-height:1.35;
-  align-items:start;
-}
-
-.key,.val{
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-
-.val{text-align:right}
-
-.address{
-  border-top:2px solid #222;
-  margin-top:10px;
-  padding-top:8px;
-  font-family:monospace;
-  font-size:clamp(13px,3.5vw,20px);
-  overflow-wrap:anywhere;
-  line-height:1.4;
-}
-
-@media print{
-  @page{
-    size:A4 portrait;
-    margin:8mm;
+@media print {
+  body {
+    background: white;
+    padding: 0;
   }
 
-  body{
-    background:#fff;
-    padding:0;
-    margin:0;
+  .form {
+    border: none;
   }
 
-  .form,.no-print{
-    display:none!important;
+  button {
+    display: none;
   }
 
-  #result{margin:0}
-
-  .bill{
-    width:100%;
-    max-width:none;
-    border:0;
-    padding:8px 5px;
-    margin:0 0 5mm;
-    break-inside:avoid;
-    page-break-inside:avoid;
-  }
-
-  .billhead{
-    gap:8px;
-    padding:3px 0 8px;
-    border-bottom:2px solid #111;
-  }
-
-  .gov-symbol{
-    width:90px;
-    max-width:90px;
-  }
-
-  .brand-main{font-size:38px}
-  .subtitle{font-size:19px}
-
-  .copy{
-    font-size:18px;
-    margin:7px 0;
-  }
-
-  .demo{
-    font-size:10px;
-    margin:6px 0;
-  }
-
-  .line{
-    font-size:13px;
-    padding:4px 0;
-    line-height:1.3;
-    gap:6px;
-  }
-
-  .address{
-    font-size:13px;
-    line-height:1.4;
-    margin-top:8px;
-    padding-top:7px;
+  input {
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
   }
 }
 </style>
@@ -208,147 +107,41 @@ button{
 
 <body>
 
+<div class="header">
+  <h1>AP SAND MANAGEMENT SYSTEM</h1>
+  <p>ANDHRA PRADESH</p>
+</div>
+
 <div class="form">
-<h2>AP SAND MANAGEMENT SYSTEM</h2>
+  <h2>SAND BILL - SAMPLE</h2>
 
-<label>Order ID</label>
-<input id="order" placeholder="Order ID">
+  <label>Customer Name</label>
+  <input type="text" placeholder="Enter customer name">
 
-<label>Trip No</label>
-<input id="trip" placeholder="Trip Number">
+  <label>Mobile Number</label>
+  <input type="tel" placeholder="Enter mobile number">
 
-<label>Customer Name</label>
-<input id="customer" placeholder="Customer Name">
+  <label>Driver Name</label>
+  <input type="text" placeholder="Enter driver name">
 
-<label>Customer Mobile No</label>
-<input id="mobile" type="tel" placeholder="Mobile Number">
+  <label>Driver Mobile Number</label>
+  <input type="tel" placeholder="Enter driver mobile number">
 
-<label>Sand Quantity</label>
-<input id="qty" placeholder="Quantity">
+  <label>Vehicle Number</label>
+  <input type="text" placeholder="Enter vehicle number">
 
-<label>Sand Supply Point</label>
-<input id="point" placeholder="Supply Point">
+  <label>Order Number</label>
+  <input type="text" placeholder="Enter order number">
 
-<label>Dispatch Date &amp; Time</label>
-<input id="date" type="datetime-local">
+  <label>Sand Quantity</label>
+  <input type="text" placeholder="Enter quantity">
 
-<label>Driver Name</label>
-<input id="driver" placeholder="Driver Name">
+  <label>Bill Amount</label>
+  <input type="number" placeholder="Enter amount">
 
-<label>Driver Mobile No</label>
-<input id="dmobile" type="tel" placeholder="Driver Mobile">
-
-<label>Vehicle No</label>
-<input id="vehicle" placeholder="Vehicle Number">
-
-<label>Address</label>
-<textarea id="address" rows="3" placeholder="Address"></textarea>
-
-<div class="no-print">
-<button onclick="makeBill()">బిల్లు తయారు చేయి</button>
-<button onclick="printBill()">ప్రింట్ / PDF</button>
-<button onclick="clearForm()">కొత్త బిల్లు</button>
+  <button onclick="window.print()">PRINT BILL</button>
+  <button onclick="location.reload()">RESET</button>
 </div>
-</div>
-
-<div id="result"></div>
-
-<script>
-function val(id){
-  return document.getElementById(id).value.trim();
-}
-
-function esc(s){
-  return String(s).replace(/[&<>"']/g,function(c){
-    return {
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c];
-  });
-}
-
-function line(label,value){
-  return '<div class="line"><span class="key">'+label+
-    '</span><span class="val">'+esc(value||'-')+
-    '</span></div>';
-}
-
-function makeCopy(copyName){
-  let d=val('date');
-
-  if(d){
-    d=d.replace('T',' ');
-  }
-
-  return '<section class="bill">'+
-    '<div class="billhead">'+
-      '<img class="gov-symbol" '+
-      'src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" '+
-      'alt="Andhra Pradesh emblem">'+
-      '<div class="brand">'+
-        '<div class="brand-main">AP SAND</div>'+
-        '<div class="subtitle">MANAGEMENT SYSTEM</div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="copy">'+copyName+'</div>'+
-    '<div class="demo">DEMO BILL TEMPLATE - NOT OFFICIAL</div>'+
-    line('Order Id',val('order'))+
-    line('Trip No',val('trip'))+
-    line('Customer Name',val('customer'))+
-    line('Customer Mobile No',val('mobile'))+
-    line('Sand Quantity',val('qty'))+
-    line('Sand Supply Point Name',val('point'))+
-    line('Dispatch Date',d)+
-    line('Driver Name',val('driver'))+
-    line('Driver Mobile No',val('dmobile'))+
-    line('Vehicle No',val('vehicle'))+
-    '<div class="address"><b>Address:</b> '+
-      esc(val('address')||'-')+
-    '</div>'+
-  '</section>';
-}
-
-function makeBill(){
-  document.getElementById('result').innerHTML =
-    makeCopy('Consumer Copy') +
-    makeCopy('Driver Copy');
-}
-
-function clearForm(){
-  document.querySelectorAll(
-    '.form input,.form textarea'
-  ).forEach(e=>e.value='');
-
-  document.getElementById('result').innerHTML='';
-  window.scrollTo(0,0);
-}
-
-function printBill(){
-  makeBill();
-
-  const images = document.querySelectorAll(
-    '#result .gov-symbol'
-  );
-
-  Promise.all(Array.from(images).map(img=>{
-    if(img.complete){
-      return Promise.resolve();
-    }
-
-    return new Promise(resolve=>{
-      img.onload=resolve;
-      img.onerror=resolve;
-    });
-  })).then(()=>{
-    window.print();
-  });
-}
-
-makeBill();
-</script>
 
 </body>
 </html>
