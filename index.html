@@ -304,7 +304,12 @@ function updateBill(){
   fields.forEach(function(f){
     let value=getValue(f[0]);
 
-    /* తేదీని DD-MM-YY HH:MM AM/PM రూపంలో చూపిస్తుంది */
+    /* Quantity దగ్గర Tons జోడిస్తుంది */
+    if(f[0] === "quantity" && value !== "-"){
+      value = value + " Tons";
+    }
+
+    /* తేదీ: DD-MM-YY HH:MM AM/PM */
     if(f[0] === "date" && value !== "-"){
       const dateObj = new Date(value);
 
