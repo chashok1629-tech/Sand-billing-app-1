@@ -3,60 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sand Bill - 3 Inch Roll</title>
+<title>Sand Billing - 80mm</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  padding: 10px;
-  background: #eeeeee;
-  font-family: Arial, sans-serif;
+  padding: 12px;
+  background: #eee;
   color: #000;
+  font-family: Arial, sans-serif;
 }
 
 .form {
-  max-width: 400px;
+  max-width: 450px;
   margin: auto;
-  padding: 12px;
+  padding: 14px;
   background: white;
-  border-radius: 6px;
 }
 
-.form h3 {
-  text-align: center;
-}
+h2 { text-align: center; }
 
-.form input {
-  width: 100%;
-  padding: 9px;
-  margin: 4px 0 9px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
+label {
+  display: block;
   font-size: 14px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-.form label {
-  font-size: 13px;
-  font-weight: bold;
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 4px;
 }
 
 button {
-  padding: 10px;
   width: 100%;
-  margin-top: 8px;
-  border: none;
-  border-radius: 4px;
-  background: #1769aa;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #075ca8;
   color: white;
-  font-size: 15px;
+  border: 0;
+  border-radius: 4px;
 }
 
-#bill {
-  display: none;
+#receipt { display: none; }
+
+.copy {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 @page {
@@ -71,65 +70,71 @@ button {
     background: white;
   }
 
-  .form, .no-print {
-    display: none !important;
-  }
+  .form { display: none !important; }
 
-  #bill {
+  #receipt {
     display: block !important;
     width: 76mm;
     margin: 0;
     padding: 0;
+  }
+
+  .copy {
+    width: 76mm;
+    margin: 0;
+    padding: 2mm 0 4mm;
     font-family: Arial, sans-serif;
-    font-size: 10px;
-    line-height: 1.35;
-    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .copy + .copy {
+    border-top: 2px dashed black;
+    margin-top: 3mm;
+    padding-top: 4mm;
+  }
+
+  .heading {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.25;
     overflow-wrap: anywhere;
   }
 
-  #bill h2 {
-    font-size: 14px;
+  .subtitle {
     text-align: center;
-    margin: 0 0 3px;
-  }
-
-  #bill h3 {
-    font-size: 11px;
-    text-align: center;
-    margin: 2px 0;
-  }
-
-  .line {
-    border-top: 1px dashed #000;
+    font-size: 16px;
+    font-weight: 900;
     margin: 5px 0;
   }
 
-  .item {
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
-    margin: 3px 0;
+  .row {
+    display: grid;
+    grid-template-columns: 42% 58%;
+    gap: 0;
+    margin: 5px 0;
+    overflow-wrap: anywhere;
   }
 
-  .item span:first-child {
-    flex: 1;
+  .value { padding-left: 3px; }
+
+  .rule {
+    border-top: 1px dashed black;
+    margin: 7px 0;
   }
 
-  .item span:last-child {
-    text-align: right;
-    font-weight: bold;
-    max-width: 48%;
-  }
-
-  .center {
+  .sample {
     text-align: center;
-  }
-
-  .watermark {
-    text-align: center;
-    font-size: 9px;
-    font-weight: bold;
+    font-size: 11px;
     margin-top: 8px;
+  }
+
+  .address {
+    overflow-wrap: anywhere;
   }
 }
 </style>
@@ -137,130 +142,108 @@ button {
 
 <body>
 
-<div class="form no-print">
-  <h3>Sand Bill Details</h3>
+<div class="form">
+<h2>Sand Bill Details</h2>
 
-  <label>Order ID</label>
-  <input id="order" placeholder="Enter order ID">
+<label>Order ID</label>
+<input id="order" placeholder="Order ID">
 
-  <label>Trip Number</label>
-  <input id="trip" placeholder="Enter trip number">
+<label>Trip Number</label>
+<input id="trip" placeholder="Trip number">
 
-  <label>Customer Name</label>
-  <input id="customer" placeholder="Enter customer name">
+<label>Customer Name</label>
+<input id="customer" placeholder="Customer name">
 
-  <label>Customer Mobile</label>
-  <input id="phone" placeholder="Enter mobile number">
+<label>Customer Mobile</label>
+<input id="phone" placeholder="Mobile number">
 
-  <label>Sand Quantity (Tonnes)</label>
-  <input id="quantity" type="number" placeholder="Enter tonnes">
+<label>Sand Quantity (Tonnes)</label>
+<input id="quantity" placeholder="Quantity">
 
-  <label>Sand Supply Centre</label>
-  <input id="centre" placeholder="Enter supply centre">
+<label>Sand Supply Point</label>
+<input id="centre" placeholder="Supply point">
 
-  <label>Dispatch Date</label>
-  <input id="date" type="date">
+<label>Dispatch Date and Time</label>
+<input id="date" type="text" placeholder="DD-MM-YYYY HH:MM">
 
-  <label>Driver Name</label>
-  <input id="driver" placeholder="Enter driver name">
+<label>Driver Name</label>
+<input id="driver" placeholder="Driver name">
 
-  <label>Driver Mobile</label>
-  <input id="driverphone" placeholder="Enter driver mobile">
+<label>Driver Mobile</label>
+<input id="driverphone" placeholder="Driver mobile">
 
-  <label>Vehicle Number</label>
-  <input id="vehicle" placeholder="Enter vehicle number">
+<label>Vehicle Number</label>
+<input id="vehicle" placeholder="Vehicle number">
 
-  <label>Amount (₹)</label>
-  <input id="amount" type="number" placeholder="Enter amount">
+<label>Customer Address</label>
+<input id="address" placeholder="Full address">
 
-  <button onclick="makeBill()">Generate Bill</button>
-  <button onclick="window.print()">Print 3-Inch Bill</button>
-  <button onclick="location.reload()">Reset</button>
+<button onclick="generateBill()">Generate & Print Both Copies</button>
+<button onclick="window.print()">Print Again</button>
+<button onclick="location.reload()">Reset</button>
 </div>
 
-<div id="bill">
-  <h2>AP SAND MANAGEMENT SYSTEM</h2>
-  <h3>SAND DELIVERY RECEIPT</h3>
-  <div class="center">SAMPLE - NOT OFFICIAL</div>
-  <div class="line"></div>
+<div id="receipt">
 
-  <div class="item">
-    <span>Order ID</span><span id="b-order"></span>
-  </div>
-  <div class="item">
-    <span>Trip Number</span><span id="b-trip"></span>
-  </div>
+  <section class="copy">
+    <div class="heading">SAND MANAGEMENT SYSTEM</div>
+    <div class="subtitle">CONSUMER COPY</div>
+    <div class="rule"></div>
 
-  <div class="line"></div>
-  <h3>CUSTOMER DETAILS</h3>
+    <div class="row"><span>Order ID</span><span class="value" id="c-order"></span></div>
+    <div class="row"><span>Trip No</span><span class="value" id="c-trip"></span></div>
+    <div class="row"><span>Customer Name</span><span class="value" id="c-customer"></span></div>
+    <div class="row"><span>Customer Mobile</span><span class="value" id="c-phone"></span></div>
+    <div class="row"><span>Sand Quantity</span><span class="value" id="c-quantity"></span></div>
+    <div class="row"><span>Supply Point</span><span class="value" id="c-centre"></span></div>
+    <div class="row"><span>Dispatch Date</span><span class="value" id="c-date"></span></div>
+    <div class="row"><span>Driver Name</span><span class="value" id="c-driver"></span></div>
+    <div class="row"><span>Driver Mobile</span><span class="value" id="c-driverphone"></span></div>
+    <div class="row"><span>Vehicle No</span><span class="value" id="c-vehicle"></span></div>
+    <div class="row"><span>Address</span><span class="value address" id="c-address"></span></div>
 
-  <div class="item">
-    <span>Customer</span><span id="b-customer"></span>
-  </div>
-  <div class="item">
-    <span>Mobile</span><span id="b-phone"></span>
-  </div>
+    <div class="rule"></div>
+    <div class="sample">SAMPLE — NOT AN OFFICIAL GOVERNMENT RECEIPT</div>
+  </section>
 
-  <div class="line"></div>
-  <h3>SAND DETAILS</h3>
+  <section class="copy">
+    <div class="heading">SAND MANAGEMENT SYSTEM</div>
+    <div class="subtitle">DRIVER COPY</div>
+    <div class="rule"></div>
 
-  <div class="item">
-    <span>Quantity (Tonnes)</span><span id="b-quantity"></span>
-  </div>
-  <div class="item">
-    <span>Supply Centre</span><span id="b-centre"></span>
-  </div>
-  <div class="item">
-    <span>Dispatch Date</span><span id="b-date"></span>
-  </div>
-  <div class="item">
-    <span>Amount</span><span id="b-amount"></span>
-  </div>
+    <div class="row"><span>Order ID</span><span class="value" id="d-order"></span></div>
+    <div class="row"><span>Trip No</span><span class="value" id="d-trip"></span></div>
+    <div class="row"><span>Customer Name</span><span class="value" id="d-customer"></span></div>
+    <div class="row"><span>Customer Mobile</span><span class="value" id="d-phone"></span></div>
+    <div class="row"><span>Sand Quantity</span><span class="value" id="d-quantity"></span></div>
+    <div class="row"><span>Supply Point</span><span class="value" id="d-centre"></span></div>
+    <div class="row"><span>Dispatch Date</span><span class="value" id="d-date"></span></div>
+    <div class="row"><span>Driver Name</span><span class="value" id="d-driver"></span></div>
+    <div class="row"><span>Driver Mobile</span><span class="value" id="d-driverphone"></span></div>
+    <div class="row"><span>Vehicle No</span><span class="value" id="d-vehicle"></span></div>
+    <div class="row"><span>Address</span><span class="value address" id="d-address"></span></div>
 
-  <div class="line"></div>
-  <h3>TRANSPORT DETAILS</h3>
+    <div class="rule"></div>
+    <div class="sample">SAMPLE — NOT AN OFFICIAL GOVERNMENT RECEIPT</div>
+  </section>
 
-  <div class="item">
-    <span>Driver Name</span><span id="b-driver"></span>
-  </div>
-  <div class="item">
-    <span>Driver Mobile</span><span id="b-driverphone"></span>
-  </div>
-  <div class="item">
-    <span>Vehicle Number</span><span id="b-vehicle"></span>
-  </div>
-
-  <div class="line"></div>
-  <div class="center">Please retain this receipt.</div>
-  <div class="watermark">SAMPLE - NOT AN OFFICIAL GOVERNMENT BILL</div>
-  <div class="center">Thank You</div>
 </div>
 
 <script>
-function makeBill() {
+function generateBill() {
   const fields = [
     "order", "trip", "customer", "phone",
     "quantity", "centre", "date", "driver",
-    "driverphone", "vehicle", "amount"
+    "driverphone", "vehicle", "address"
   ];
 
   fields.forEach(function(id) {
-    let value = document.getElementById(id).value.trim();
+    const value = document.getElementById(id).value.trim() || "-";
 
-    if (id === "amount" && value !== "") {
-      value = "₹" + value;
-    }
-
-    if (id === "date" && value !== "") {
-      const parts = value.split("-");
-      value = parts[2] + "-" + parts[1] + "-" + parts[0];
-    }
-
-    document.getElementById("b-" + id).textContent =
-      value || "-";
+    document.getElementById("c-" + id).textContent = value;
+    document.getElementById("d-" + id).textContent = value;
   });
 
-  document.getElementById("bill").style.display = "block";
   window.print();
 }
 </script>
