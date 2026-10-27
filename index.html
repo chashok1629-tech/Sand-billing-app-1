@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,7 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   padding:12px;
@@ -15,6 +16,7 @@ body{
   color:#111;
   font-family:Arial,Helvetica,sans-serif;
 }
+
 .form,.bill{
   background:#fff;
   max-width:750px;
@@ -22,8 +24,15 @@ body{
   padding:20px;
   border:1px solid #ccc;
 }
+
 h2{text-align:center;margin:0 0 8px;font-size:25px}
-label{display:block;font-weight:bold;margin-top:12px}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin-top:12px;
+}
+
 input,textarea{
   width:100%;
   padding:12px;
@@ -32,6 +41,7 @@ input,textarea{
   border:1px solid #888;
   border-radius:4px;
 }
+
 button{
   padding:12px 16px;
   margin:12px 5px 0 0;
@@ -41,6 +51,7 @@ button{
   border-radius:5px;
   font-size:16px;
 }
+
 .billhead{
   display:flex;
   align-items:center;
@@ -49,12 +60,16 @@ button{
   border-bottom:4px solid #111;
   padding:5px 0 17px;
 }
+
 .gov-symbol{
+  display:block;
   width:23%;
   max-width:145px;
   height:auto;
   object-fit:contain;
+  flex-shrink:0;
 }
+
 .brand{
   flex:1;
   min-width:0;
@@ -64,23 +79,27 @@ button{
   line-height:1;
   color:#000;
 }
+
 .brand-main{
-  font-size:clamp(30px,7vw,62px);
+  font-size:clamp(25px,7vw,62px);
   letter-spacing:1px;
   white-space:nowrap;
 }
+
 .subtitle{
-  font-size:clamp(13px,3.5vw,29px);
+  font-size:clamp(11px,3.5vw,29px);
   font-weight:900;
   margin-top:5px;
   white-space:nowrap;
 }
+
 .copy{
   text-align:center;
   font-size:24px;
   font-weight:bold;
   margin-top:18px;
 }
+
 .demo{
   text-align:center;
   color:#a00030;
@@ -88,6 +107,7 @@ button{
   font-size:14px;
   margin:14px 0;
 }
+
 .line{
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr);
@@ -97,8 +117,10 @@ button{
   font-size:clamp(13px,3.5vw,21px);
   align-items:start;
 }
+
 .key{overflow-wrap:anywhere}
 .val{text-align:right;overflow-wrap:anywhere}
+
 .address{
   border-top:2px solid #222;
   margin-top:12px;
@@ -108,11 +130,14 @@ button{
   overflow-wrap:anywhere;
   line-height:1.5;
 }
+
 @media print{
   @page{size:A4 portrait;margin:8mm}
+
   body{background:#fff;padding:0}
   .form,.no-print{display:none!important}
   #result{margin:0}
+
   .bill{
     max-width:none;
     border:1px solid #ccc;
@@ -120,6 +145,7 @@ button{
     margin:0 0 8mm;
     break-inside:avoid;
   }
+
   .gov-symbol{width:23%;max-width:120px}
   .brand-main{font-size:35px}
   .subtitle{font-size:17px}
@@ -154,7 +180,7 @@ button{
 <label>Sand Supply Point</label>
 <input id="point" placeholder="Supply Point">
 
-<label>Dispatch Date & Time</label>
+<label>Dispatch Date &amp; Time</label>
 <input id="date" type="datetime-local">
 
 <label>Driver Name</label>
@@ -184,7 +210,7 @@ function val(id){
 }
 
 function esc(s){
-  return s.replace(/[&<>"']/g,function(c){
+  return String(s).replace(/[&<>"']/g,function(c){
     return {
       '&':'&amp;',
       '<':'&lt;',
@@ -207,21 +233,23 @@ function makeCopy(copyName){
 
   return '<section class="bill">'+
     '<div class="billhead">'+
-      '<img class="gov-symbol" src="ap-sand-logo.png" alt="Logo">'+
+      '<img class="gov-symbol" '+
+      'src="./1000458194.png" '+
+      'alt="Andhra Pradesh emblem">'+
       '<div class="brand">'+
         '<div class="brand-main">AP SAND</div>'+
         '<div class="subtitle">MANAGEMENT SYSTEM</div>'+
       '</div>'+
     '</div>'+
     '<div class="copy">'+copyName+'</div>'+
-    '<div class="demo">DEMO BILL TEMPLATE</div>'+
+    '<div class="demo">DEMO BILL TEMPLATE - NOT OFFICIAL</div>'+
     line('Order ID',val('order'))+
     line('Trip No',val('trip'))+
     line('Customer Name',val('customer'))+
     line('Customer Mobile No',val('mobile'))+
     line('Sand Quantity',val('qty'))+
     line('Sand Supply Point',val('point'))+
-    line('Dispatch Date',d)+
+    line('Dispatch Date &amp; Time',d)+
     line('Driver Name',val('driver'))+
     line('Driver Mobile No',val('dmobile'))+
     line('Vehicle No',val('vehicle'))+
