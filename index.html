@@ -1,157 +1,111 @@
 
 <!DOCTYPE html>
-<html lang="te">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AP SAND MANAGEMENT SYSTEM</title>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #eee;
-  margin: 0;
-  padding: 12px;
-  color: #111;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:12px;
+  background:#eee;
+  color:#111;
+  font-family:Arial,sans-serif;
 }
-
-.form, .bill {
-  background: white;
-  padding: 16px;
-  margin: auto;
-  max-width: 600px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.form,.bill{
+  background:#fff;
+  max-width:750px;
+  margin:0 auto 18px;
+  padding:22px;
+  border:1px solid #ccc;
 }
-
-h2 {
-  text-align: center;
-  margin: 0;
-  font-size: 25px;
+h2{text-align:center;margin:0 0 8px;font-size:26px}
+label{display:block;font-weight:bold;margin-top:12px}
+input,textarea{
+  width:100%;
+  padding:12px;
+  margin-top:5px;
+  font-size:16px;
+  border:1px solid #888;
+  border-radius:4px;
 }
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 12px;
+button{
+  padding:12px 16px;
+  margin:12px 5px 0 0;
+  background:#1769aa;
+  color:white;
+  border:0;
+  border-radius:5px;
+  font-size:16px;
 }
-
-input, textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  margin-top: 5px;
-  font-size: 16px;
-  border: 1px solid #888;
-  border-radius: 4px;
+.billhead{
+  text-align:center;
+  border-bottom:4px solid #111;
+  padding-bottom:20px;
 }
-
-button {
-  padding: 13px;
-  border: 0;
-  border-radius: 5px;
-  background: #1769aa;
-  color: white;
-  font-size: 16px;
-  margin: 12px 4px 0 0;
+.brand{
+  font-size:38px;
+  font-weight:900;
+  letter-spacing:1px;
 }
-
-#result {
-  margin-top: 18px;
+.subtitle{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:5px;
 }
-
-.bill {
-  border-radius: 0;
-  margin-bottom: 16px;
-  padding: 14px;
+.copy{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:22px;
 }
-
-.billhead {
-  text-align: center;
-  border-bottom: 2px solid #111;
-  padding-bottom: 8px;
+.demo{
+  text-align:center;
+  color:#a00030;
+  font-weight:bold;
+  font-size:18px;
+  margin:18px 0;
 }
-
-.brand {
-  font-size: 24px;
-  font-weight: bold;
+.line{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+  padding:11px 0;
+  font-family:monospace;
+  font-size:clamp(13px,3.5vw,22px);
+  align-items:start;
 }
-
-.copy {
-  font-size: 18px;
-  margin-top: 6px;
+.key{overflow-wrap:anywhere}
+.val{text-align:right;overflow-wrap:anywhere}
+.address{
+  border-top:2px solid #222;
+  margin-top:12px;
+  padding-top:14px;
+  font-family:monospace;
+  font-size:clamp(14px,3.5vw,22px);
+  overflow-wrap:anywhere;
+  line-height:1.5;
 }
-
-.sample {
-  text-align: center;
-  color: #b00020;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 6px 0;
-}
-
-.line {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 4px 0;
-  font-family: monospace;
-  font-size: 14px;
-}
-
-.key, .val {
-  flex: 1;
-  min-width: 0;
-}
-
-.val {
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-.address {
-  border-top: 1px solid #222;
-  margin-top: 8px;
-  padding-top: 8px;
-  font-family: monospace;
-  font-size: 14px;
-  overflow-wrap: anywhere;
-}
-
-@media print {
-  @page {
-    size: auto;
-    margin: 8mm;
+@media print{
+  @page{size:A4 portrait;margin:8mm}
+  body{background:#fff;padding:0}
+  .form,.no-print{display:none!important}
+  #result{margin:0}
+  .bill{
+    max-width:none;
+    border:1px solid #ccc;
+    padding:12px;
+    margin:0 0 8mm;
+    break-inside:avoid;
   }
-
-  body {
-    background: white;
-    padding: 0;
-  }
-
-  .form, .no-print {
-    display: none !important;
-  }
-
-  #result {
-    margin: 0;
-  }
-
-  .bill {
-    max-width: none;
-    border: 0;
-    padding: 4px;
-    margin: 0 0 8mm;
-    page-break-inside: avoid;
-  }
-
-  .brand {
-    font-size: 22px;
-  }
-
-  .line, .address {
-    font-size: 12px;
-  }
+  .brand{font-size:28px}
+  .subtitle{font-size:20px}
+  .copy{font-size:20px;margin-top:12px}
+  .demo{font-size:12px;margin:10px 0}
+  .line{font-size:13px;padding:7px 0}
+  .address{font-size:13px}
 }
 </style>
 </head>
@@ -159,113 +113,112 @@ button {
 <body>
 
 <div class="form">
-  <h2>AP SAND MANAGEMENT SYSTEM</h2>
+<h2>AP SAND MANAGEMENT SYSTEM</h2>
 
-  <label>Order ID</label>
-  <input id="order" placeholder="ఉదా: DEMO-001">
+<label>Order ID</label>
+<input id="order" placeholder="Order ID">
 
-  <label>Trip No</label>
-  <input id="trip" placeholder="ట్రిప్ నంబర్">
+<label>Trip No</label>
+<input id="trip" placeholder="Trip Number">
 
-  <label>Customer Name</label>
-  <input id="customer" placeholder="కస్టమర్ పేరు">
+<label>Customer Name</label>
+<input id="customer" placeholder="Customer Name">
 
-  <label>Customer Mobile No</label>
-  <input id="mobile" type="tel" placeholder="ఫోన్ నంబర్">
+<label>Customer Mobile No</label>
+<input id="mobile" type="tel" placeholder="Mobile Number">
 
-  <label>Sand Quantity</label>
-  <input id="qty" placeholder="ఉదా: 25 Tons">
+<label>Sand Quantity</label>
+<input id="qty" placeholder="Quantity">
 
-  <label>Sand Supply Point Name</label>
-  <input id="point" placeholder="సాండ్ సప్లై పాయింట్">
+<label>Sand Supply Point</label>
+<input id="point" placeholder="Supply Point">
 
-  <label>Dispatch Date & Time</label>
-  <input id="date" type="datetime-local">
+<label>Dispatch Date & Time</label>
+<input id="date" type="datetime-local">
 
-  <label>Driver Name</label>
-  <input id="driver" placeholder="డ్రైవర్ పేరు">
+<label>Driver Name</label>
+<input id="driver" placeholder="Driver Name">
 
-  <label>Driver Mobile No</label>
-  <input id="dmobile" type="tel" placeholder="డ్రైవర్ ఫోన్ నంబర్">
+<label>Driver Mobile No</label>
+<input id="dmobile" type="tel" placeholder="Driver Mobile">
 
-  <label>Vehicle No</label>
-  <input id="vehicle" placeholder="వాహనం నంబర్">
+<label>Vehicle No</label>
+<input id="vehicle" placeholder="Vehicle Number">
 
-  <label>Address</label>
-  <textarea id="address" rows="3"
-    placeholder="చిరునామా"></textarea>
+<label>Address</label>
+<textarea id="address" rows="3" placeholder="Address"></textarea>
 
-  <div class="no-print">
-    <button onclick="makeBill()">బిల్లు తయారు చేయి</button>
-    <button onclick="window.print()">ప్రింట్ / PDF</button>
-    <button onclick="clearForm()">కొత్త బిల్లు</button>
-  </div>
+<div class="no-print">
+<button onclick="makeBill()">బిల్లు తయారు చేయి</button>
+<button onclick="window.print()">ప్రింట్ / PDF</button>
+<button onclick="clearForm()">కొత్త బిల్లు</button>
+</div>
 </div>
 
 <div id="result"></div>
 
 <script>
-function val(id) {
+function val(id){
   return document.getElementById(id).value.trim();
 }
 
-function esc(s) {
-  return s.replace(/[&<>"']/g, function(c) {
+function esc(s){
+  return s.replace(/[&<>"']/g,function(c){
     return {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
     }[c];
   });
 }
 
-function line(label, value) {
-  return '<div class="line"><span class="key">' +
-    label + '</span><span class="val">' +
-    esc(value || '-') + '</span></div>';
+function line(label,value){
+  return '<div class="line"><span class="key">'+label+
+    '</span><span class="val">'+esc(value||'-')+
+    '</span></div>';
 }
 
-function makeCopy(copyName) {
-  let d = val('date');
-  if (d) d = d.replace('T', ' ');
+function makeCopy(copyName){
+  let d=val('date');
+  if(d) d=d.replace('T',' ');
 
-  return '<section class="bill">' +
-    '<div class="billhead">' +
-    '<div class="brand">AP SAND MANAGEMENT SYSTEM</div>' +
-    '<div class="copy">' + copyName + '</div>' +
-    '</div>' +
-
-    line('Order ID', val('order')) +
-    line('Trip No', val('trip')) +
-    line('Customer Name', val('customer')) +
-    line('Customer Mobile No', val('mobile')) +
-    line('Sand Quantity', val('qty')) +
-    line('Sand Supply Point', val('point')) +
-    line('Dispatch Date & Time', d) +
-    line('Driver Name', val('driver')) +
-    line('Driver Mobile No', val('dmobile')) +
-    line('Vehicle No', val('vehicle')) +
-
-    '<div class="address"><b>Address:</b> ' +
-    esc(val('address') || '-') +
+  return '<section class="bill">'+
+    '<div class="billhead">'+
+    '<div class="brand">SAND BILL</div>'+
+    '<div class="subtitle">DELIVERY DETAILS</div>'+
+    '<div class="copy">'+copyName+'</div>'+
+    '</div>'+
+    '<div class="demo">DEMO BILL TEMPLATE</div>'+
+    line('Order ID',val('order'))+
+    line('Trip No',val('trip'))+
+    line('Customer Name',val('customer'))+
+    line('Customer Mobile No',val('mobile'))+
+    line('Sand Quantity',val('qty'))+
+    line('Sand Supply Point',val('point'))+
+    line('Dispatch Date',d)+
+    line('Driver Name',val('driver'))+
+    line('Driver Mobile No',val('dmobile'))+
+    line('Vehicle No',val('vehicle'))+
+    '<div class="address"><b>Address:</b> '+
+    esc(val('address')||'-')+
     '</div></section>';
 }
 
-function makeBill() {
-  document.getElementById('result').innerHTML =
-    makeCopy('Consumer Copy') +
+function makeBill(){
+  document.getElementById('result').innerHTML=
+    makeCopy('Consumer Copy')+
     makeCopy('Driver Copy');
 }
 
-function clearForm() {
+function clearForm(){
   document.querySelectorAll(
-    '.form input, .form textarea'
-  ).forEach(e => e.value = '');
+    '.form input,.form textarea'
+  ).forEach(e=>e.value='');
 
-  document.getElementById('result').innerHTML = '';
-  window.scrollTo(0, 0);
+  document.getElementById('result').innerHTML='';
+  window.scrollTo(0,0);
 }
 
 makeBill();
