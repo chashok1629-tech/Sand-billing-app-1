@@ -1,147 +1,211 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AP SAND MANAGEMENT SYSTEM</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:10px;
+  background:#eee;
+  color:#111;
+  font-family:Arial,sans-serif;
 }
-
-body {
-  margin: 0;
-  padding: 12px;
-  background: #eeeeee;
-  color: #111111;
-  font-family: Arial, sans-serif;
+.card{
+  background:white;
+  max-width:700px;
+  margin:auto;
+  padding:18px;
+  border:1px solid #ccc;
 }
-
-.header {
-  width: 100%;
-  background: white;
-  border: 2px solid #222;
-  padding: 18px 8px;
-  text-align: center;
-  margin-bottom: 15px;
+h1{
+  text-align:center;
+  font-size:25px;
+  line-height:1.1;
+  margin:0;
 }
-
-.header h1 {
-  margin: 0;
-  font-size: clamp(20px, 5vw, 32px);
-  font-weight: 900;
-  line-height: 1.3;
-  letter-spacing: 0.5px;
-  color: #000;
+.logo{
+  width:65px;
+  height:65px;
+  object-fit:contain;
 }
-
-.header p {
-  margin: 6px 0 0;
-  font-size: 14px;
-  font-weight: bold;
+.head{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
 }
-
-.form {
-  background: white;
-  border: 1px solid #999;
-  padding: 15px;
-  border-radius: 5px;
+.copy{
+  text-align:center;
+  font-size:17px;
+  padding:5px;
+  border-bottom:1px solid #111;
 }
-
-.form h2 {
-  text-align: center;
-  font-size: 21px;
-  margin-top: 0;
+.fields{
+  font-family:monospace;
+  font-size:14px;
+  line-height:1.45;
+  padding-top:8px;
 }
-
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
+.item{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin:3px 0;
 }
-
-input {
-  width: 100%;
-  padding: 11px;
-  margin-top: 5px;
-  border: 1px solid #777;
-  border-radius: 4px;
-  font-size: 16px;
+.item span:first-child{flex:1}
+.item span:last-child{
+  flex:1;
+  text-align:right;
+  overflow-wrap:anywhere;
 }
-
-button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 5px;
-  background: #1558a6;
-  color: white;
-  font-size: 17px;
-  font-weight: bold;
+.address{
+  margin-top:6px;
+  overflow-wrap:anywhere;
 }
-
-@media print {
-  body {
-    background: white;
-    padding: 0;
-  }
-
-  .form {
-    border: none;
-  }
-
-  button {
-    display: none;
-  }
-
-  input {
-    border: none;
-    border-bottom: 1px solid black;
-    border-radius: 0;
-  }
+.copybill{
+  border-bottom:1px solid #111;
+  padding-bottom:12px;
+}
+label{
+  display:block;
+  font-weight:bold;
+  margin-top:10px;
+}
+input,textarea{
+  width:100%;
+  padding:10px;
+  margin-top:5px;
+  font-size:16px;
+}
+button{
+  padding:12px;
+  margin-top:12px;
+  background:#1769aa;
+  color:white;
+  border:0;
+  border-radius:5px;
+  font-size:16px;
+}
+@media print{
+  body{background:white;padding:0}
+  .form,.no-print{display:none!important}
+  .card{border:0;padding:5px;max-width:none}
+  .copybill{break-inside:avoid}
+  @page{size:A4;margin:8mm}
 }
 </style>
 </head>
-
 <body>
 
-<div class="header">
-  <h1>AP SAND MANAGEMENT SYSTEM</h1>
-  <p>ANDHRA PRADESH</p>
-</div>
+<div class="card">
 
 <div class="form">
-  <h2>SAND BILL - SAMPLE</h2>
+<h2>ఇసుక బిల్లు వివరాలు నమోదు చేయండి</h2>
 
-  <label>Customer Name</label>
-  <input type="text" placeholder="Enter customer name">
+<label>ఆర్డర్ ఐడి</label>
+<input id="order" placeholder="ఆర్డర్ ఐడి">
 
-  <label>Mobile Number</label>
-  <input type="tel" placeholder="Enter mobile number">
+<label>ట్రిప్ నంబర్</label>
+<input id="trip" placeholder="ట్రిప్ నంబర్">
 
-  <label>Driver Name</label>
-  <input type="text" placeholder="Enter driver name">
+<label>కస్టమర్ పేరు</label>
+<input id="customer" placeholder="కస్టమర్ పేరు">
 
-  <label>Driver Mobile Number</label>
-  <input type="tel" placeholder="Enter driver mobile number">
+<label>కస్టమర్ మొబైల్ నంబర్</label>
+<input id="mobile" placeholder="మొబైల్ నంబర్">
 
-  <label>Vehicle Number</label>
-  <input type="text" placeholder="Enter vehicle number">
+<label>ఇసుక పరిమాణం (టన్నులు)</label>
+<input id="qty" placeholder="25 Tons">
 
-  <label>Order Number</label>
-  <input type="text" placeholder="Enter order number">
+<label>ఇసుక సరఫరా కేంద్రం</label>
+<input id="point" placeholder="స్టాక్ పాయింట్">
 
-  <label>Sand Quantity</label>
-  <input type="text" placeholder="Enter quantity">
+<label>డిస్పాచ్ తేదీ</label>
+<input id="date" type="datetime-local">
 
-  <label>Bill Amount</label>
-  <input type="number" placeholder="Enter amount">
+<label>డ్రైవర్ పేరు</label>
+<input id="driver" placeholder="డ్రైవర్ పేరు">
 
-  <button onclick="window.print()">PRINT BILL</button>
-  <button onclick="location.reload()">RESET</button>
+<label>డ్రైవర్ మొబైల్ నంబర్</label>
+<input id="dmobile" placeholder="మొబైల్ నంబర్">
+
+<label>వాహన నంబర్</label>
+<input id="vehicle" placeholder="AP31TH8459">
+
+<label>చిరునామా</label>
+<textarea id="address" placeholder="పూర్తి చిరునామా"></textarea>
+
+<button type="button" onclick="makeBill()">బిల్లు తయారు చేయండి</button>
+<button type="button" onclick="window.print()">ప్రింట్ / PDF</button>
+<button type="button" onclick="location.reload()">కొత్త బిల్లు</button>
 </div>
 
+<div id="output"></div>
+
+</div>
+
+<script>
+function makeBill(){
+ const get=id=>document.getElementById(id).value.trim();
+ const dateValue=get('date');
+ const date=dateValue
+   ? new Date(dateValue).toLocaleString('en-IN')
+   : '';
+
+ const fields=[
+ ['Order Id',get('order')],
+ ['Trip No',get('trip')],
+ ['Customer Name',get('customer')],
+ ['Customer Mobile No',get('mobile')],
+ ['Sand Quantity',get('qty')],
+ ['Sand Supply Point Name',get('point')],
+ ['Dispatch Date',date],
+ ['Driver Name',get('driver')],
+ ['Driver Mobile No',get('dmobile')],
+ ['Vehicle No',get('vehicle')]
+ ];
+
+ function bill(copy){
+   return `
+   <section class="copybill">
+     <div class="head">
+       <img class="logo"
+       src="https://upload.wikimedia.org/wikipedia/commons/8/81/Andhra_Pradesh_Government_Logo.png"
+       alt="Andhra Pradesh Government Logo"
+       onerror="this.style.display='none'">
+       <h1>AP SAND<br>MANAGEMENT SYSTEM</h1>
+     </div>
+     <div class="copy">${copy}</div>
+     <div class="fields">
+       ${fields.map(([k,v])=>`
+         <div class="item">
+           <span>${k}</span>
+           <span>${escapeHTML(v)}</span>
+         </div>`).join('')}
+       <div class="address">
+         Address: ${escapeHTML(get('address'))}
+       </div>
+     </div>
+   </section>`;
+ }
+
+ document.getElementById('output').innerHTML=
+   bill('Consumer Copy')+
+   bill('Driver Copy');
+}
+
+function escapeHTML(s){
+ return s.replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;',
+  '"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+</script>
 </body>
 </html>
