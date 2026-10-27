@@ -274,6 +274,22 @@ function clearForm(){
 }
 
 makeBill();
+  function printBill(){
+  const images = document.querySelectorAll('#result .gov-symbol');
+
+  Promise.all(Array.from(images).map(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      return Promise.resolve();
+    }
+
+    return new Promise(resolve => {
+      img.onload = resolve;
+      img.onerror = resolve;
+    });
+  })).then(() => {
+    window.print();
+  });
+  }
 </script>
 
 </body>
