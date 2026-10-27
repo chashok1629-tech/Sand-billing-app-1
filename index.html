@@ -67,7 +67,6 @@ button{
   background:#fff;
 }
 
-/* COPY చుట్టూ ఉన్న బాక్స్ తొలగించబడింది */
 .copy{
   width:100%;
   padding:8px;
@@ -98,7 +97,6 @@ button{
   margin:7px 0;
 }
 
-/* LABEL LEFT - COLON CENTER - VALUES RIGHT */
 .row{
   display:grid;
   grid-template-columns:40% 5% 55%;
@@ -160,7 +158,6 @@ button{
     margin:0;
   }
 
-  /* ప్రింట్‌లో కూడా COPY బాక్స్ ఉండదు */
   .copy{
     width:72mm;
     margin:0 0 3mm;
@@ -307,8 +304,26 @@ function updateBill(){
   fields.forEach(function(f){
     let value=getValue(f[0]);
 
-    if(f[0]==="date" && value!=="-"){
-      value=value.replace("T"," ");
+    /* తేదీని DD-MM-YY HH:MM AM/PM రూపంలో చూపిస్తుంది */
+    if(f[0] === "date" && value !== "-"){
+      const dateObj = new Date(value);
+
+      if(!isNaN(dateObj.getTime())){
+        const day = String(dateObj.getDate()).padStart(2, "0");
+        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const year = String(dateObj.getFullYear()).slice(-2);
+
+        let hours = dateObj.getHours();
+        const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+        const ampm = hours >= 12 ? "PM" : "AM";
+
+        hours = hours % 12;
+        hours = hours || 12;
+
+        const formattedHours = String(hours).padStart(2, "0");
+
+        value = `${day}-${month}-${year} ${formattedHours}:${minutes} ${ampm}`;
+      }
     }
 
     put(f[1],value);
