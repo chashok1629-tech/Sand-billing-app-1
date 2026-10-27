@@ -131,7 +131,7 @@ button{
   word-break:break-word;
 }
 
-/* Address మాత్రమే ఒకే లైన్‌లో మొదలవుతుంది */
+/* Address ఒకే వరుసలో ప్రారంభమవుతుంది */
 .address-row{
   display:flex;
   align-items:flex-start;
@@ -251,7 +251,7 @@ button{
   <input id="supply" placeholder="Enter Sand Supply Point Name">
 
   <label>Dispatch Date</label>
-  <input id="date" type="datetime-local">
+  <input id="date" type="datetime-local" step="1">
 
   <label>Driver Name</label>
   <input id="driver" placeholder="Enter Driver Name">
@@ -272,7 +272,6 @@ button{
 
 <div id="receipt">
 
-  <!-- CONSUMER COPY -->
   <div class="copy">
     <div class="heading">SAND MANAGEMENT SYSTEM</div>
     <div class="subtitle">CONSUMER COPY</div>
@@ -293,7 +292,6 @@ button{
     <div class="line"></div>
   </div>
 
-  <!-- DRIVER COPY -->
   <div class="copy">
     <div class="heading">SAND MANAGEMENT SYSTEM</div>
     <div class="subtitle">DRIVER COPY</div>
@@ -357,6 +355,7 @@ function updateBill(){
 
         let hours = dateObj.getHours();
         const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+        const seconds = String(dateObj.getSeconds()).padStart(2, "0");
         const ampm = hours >= 12 ? "PM" : "AM";
 
         hours = hours % 12;
@@ -364,7 +363,7 @@ function updateBill(){
 
         const formattedHours = String(hours).padStart(2, "0");
 
-        value = `${day}-${month}-${year} ${formattedHours}:${minutes} ${ampm}`;
+        value = `${day}-${month}-${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
       }
     }
 
@@ -385,6 +384,11 @@ function resetBill(){
     });
   updateBill();
 }
+
+document.querySelectorAll(".form input,.form textarea").forEach(function(field){
+  field.addEventListener("input", updateBill);
+  field.addEventListener("change", updateBill);
+});
 
 updateBill();
 </script>
