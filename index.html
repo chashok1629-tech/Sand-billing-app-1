@@ -1,110 +1,121 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<title>AP SAND MANAGEMENT SYSTEM</title>  <style>  
-*{box-sizing:border-box}  
-body{  
-  margin:0;  
-  padding:12px;  
-  background:#eee;  
-  color:#111;  
-  font-family:Arial,sans-serif;  
-}  
-.form,.bill{  
-  background:#fff;  
-  max-width:750px;  
-  margin:0 auto 18px;  
-  padding:22px;  
-  border:1px solid #ccc;  
-}  
-h2{text-align:center;margin:0 0 8px;font-size:26px}  
-label{display:block;font-weight:bold;margin-top:12px}  
-input,textarea{  
-  width:100%;  
-  padding:12px;  
-  margin-top:5px;  
-  font-size:16px;  
-  border:1px solid #888;  
-  border-radius:4px;  
-}  
-button{  
-  padding:12px 16px;  
-  margin:12px 5px 0 0;  
-  background:#1769aa;  
-  color:white;  
-  border:0;  
-  border-radius:5px;  
-  font-size:16px;  
-}  
-.billhead{  
-  text-align:center;  
-  border-bottom:4px solid #111;  
-  padding-bottom:20px;  
-}  
-.brand{  
-  font-size:38px;  
-  font-weight:900;  
-  letter-spacing:1px;  
-}  
-.subtitle{  
-  font-size:25px;  
-  font-weight:bold;  
-  margin-top:5px;  
-}  
-.copy{  
-  font-size:25px;  
-  font-weight:bold;  
-  margin-top:22px;  
-}  
-.demo{  
-  text-align:center;  
-  color:#a00030;  
-  font-weight:bold;  
-  font-size:18px;  
-  margin:18px 0;  
-}  
-.line{  
-  display:grid;  
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);  
-  gap:12px;  
-  padding:11px 0;  
-  font-family:monospace;  
-  font-size:clamp(13px,3.5vw,22px);  
-  align-items:start;  
-}  
-.key{overflow-wrap:anywhere}  
-.val{text-align:right;overflow-wrap:anywhere}  
-.address{  
-  border-top:2px solid #222;  
-  margin-top:12px;  
-  padding-top:14px;  
-  font-family:monospace;  
-  font-size:clamp(14px,3.5vw,22px);  
-  overflow-wrap:anywhere;  
-  line-height:1.5;  
-}  
-@media print{  
-  @page{size:A4 portrait;margin:8mm}  
-  body{background:#fff;padding:0}  
-  .form,.no-print{display:none!important}  
-  #result{margin:0}  
-  .bill{  
-    max-width:none;  
-    border:1px solid #ccc;  
-    padding:12px;  
-    margin:0 0 8mm;  
-    break-inside:avoid;  
-  }  
-  .brand{font-size:28px}  
-  .subtitle{font-size:20px}  
-  .copy{font-size:20px;margin-top:12px}  
-  .demo{font-size:12px;margin:10px 0}  
-  .line{font-size:13px;padding:7px 0}  
-  .address{font-size:13px}  
-}  
-</style>  </head>  <body>  <div class="form">  
-<h2>AP SAND MANAGEMENT SYSTEM</h2>  <label>Order ID</label>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AP SAND MANAGEMENT SYSTEM</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:12px;
+  background:#eee;
+  color:#111;
+  font-family:Arial,sans-serif;
+}
+.form,.bill{
+  background:#fff;
+  max-width:750px;
+  margin:0 auto 18px;
+  padding:22px;
+  border:1px solid #ccc;
+}
+h2{text-align:center;margin:0 0 8px;font-size:26px}
+label{display:block;font-weight:bold;margin-top:12px}
+input,textarea{
+  width:100%;
+  padding:12px;
+  margin-top:5px;
+  font-size:16px;
+  border:1px solid #888;
+  border-radius:4px;
+}
+button{
+  padding:12px 16px;
+  margin:12px 5px 0 0;
+  background:#1769aa;
+  color:white;
+  border:0;
+  border-radius:5px;
+  font-size:16px;
+}
+.billhead{
+  text-align:center;
+  border-bottom:4px solid #111;
+  padding-bottom:20px;
+}
+.brand{
+  font-size:38px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+.subtitle{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:5px;
+}
+.copy{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:22px;
+}
+.demo{
+  text-align:center;
+  color:#a00030;
+  font-weight:bold;
+  font-size:18px;
+  margin:18px 0;
+}
+.line{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:12px;
+  padding:11px 0;
+  font-family:monospace;
+  font-size:clamp(13px,3.5vw,22px);
+  align-items:start;
+}
+.key{overflow-wrap:anywhere}
+.val{text-align:right;overflow-wrap:anywhere}
+.address{
+  border-top:2px solid #222;
+  margin-top:12px;
+  padding-top:14px;
+  font-family:monospace;
+  font-size:clamp(14px,3.5vw,22px);
+  overflow-wrap:anywhere;
+  line-height:1.5;
+}
+@media print{
+  @page{size:A4 portrait;margin:8mm}
+  body{background:#fff;padding:0}
+  .form,.no-print{display:none!important}
+  #result{margin:0}
+  .bill{
+    max-width:none;
+    border:1px solid #ccc;
+    padding:12px;
+    margin:0 0 8mm;
+    break-inside:avoid;
+  }
+  .brand{font-size:28px}
+  .subtitle{font-size:20px}
+  .copy{font-size:20px;margin-top:12px}
+  .demo{font-size:12px;margin:10px 0}
+  .line{font-size:13px;padding:7px 0}
+  .address{font-size:13px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="form">
+<h2>AP SAND MANAGEMENT SYSTEM</h2>
+
+<label>Order ID</label>
 <input id="order" placeholder="Order ID">
 
 <label>Trip No</label>
@@ -135,76 +146,83 @@ button{
 <input id="vehicle" placeholder="Vehicle Number">
 
 <label>Address</label>
+<textarea id="address" rows="3" placeholder="Address"></textarea>
 
-<textarea id="address" rows="3" placeholder="Address"></textarea>  <div class="no-print">  
-<button onclick="makeBill()">బిల్లు తయారు చేయి</button>  
-<button onclick="window.print()">ప్రింట్ / PDF</button>  
-<button onclick="clearForm()">కొత్త బిల్లు</button>  
-</div>  
-</div>  <div id="result"></div>  <script>  
-function val(id){  
-  return document.getElementById(id).value.trim();  
-}  
-  
-function esc(s){  
-  return s.replace(/[&<>"']/g,function(c){  
-    return {  
-      '&':'&amp;',  
-      '<':'&lt;',  
-      '>':'&gt;',  
-      '"':'&quot;',  
-      "'":'&#39;'  
-    }[c];  
-  });  
-}  
-  
-function line(label,value){  
-  return '<div class="line"><span class="key">'+label+  
-    '</span><span class="val">'+esc(value||'-')+  
-    '</span></div>';  
-}  
-  
-function makeCopy(copyName){  
-  let d=val('date');  
-  if(d) d=d.replace('T',' ');  
-  
-  return '<section class="bill">'+  
-    '<div class="billhead">'+  
-    '<div class="brand">SAND BILL</div>'+  
-    '<div class="subtitle">DELIVERY DETAILS</div>'+  
-    '<div class="copy">'+copyName+'</div>'+  
-    '</div>'+  
-    '<div class="demo">DEMO BILL TEMPLATE</div>'+  
-    line('Order ID',val('order'))+  
-    line('Trip No',val('trip'))+  
-    line('Customer Name',val('customer'))+  
-    line('Customer Mobile No',val('mobile'))+  
-    line('Sand Quantity',val('qty'))+  
-    line('Sand Supply Point',val('point'))+  
-    line('Dispatch Date',d)+  
-    line('Driver Name',val('driver'))+  
-    line('Driver Mobile No',val('dmobile'))+  
-    line('Vehicle No',val('vehicle'))+  
-    '<div class="address"><b>Address:</b> '+  
-    esc(val('address')||'-')+  
-    '</div></section>';  
-}  
-  
-function makeBill(){  
-  document.getElementById('result').innerHTML=  
-    makeCopy('Consumer Copy')+  
-    makeCopy('Driver Copy');  
-}  
-  
-function clearForm(){  
-  document.querySelectorAll(  
-    '.form input,.form textarea'  
-  ).forEach(e=>e.value='');  
-  
-  document.getElementById('result').innerHTML='';  
-  window.scrollTo(0,0);  
-}  
-  
-makeBill();  
-</script>  </body>  
+<div class="no-print">
+<button onclick="makeBill()">బిల్లు తయారు చేయి</button>
+<button onclick="window.print()">ప్రింట్ / PDF</button>
+<button onclick="clearForm()">కొత్త బిల్లు</button>
+</div>
+</div>
+
+<div id="result"></div>
+
+<script>
+function val(id){
+  return document.getElementById(id).value.trim();
+}
+
+function esc(s){
+  return s.replace(/[&<>"']/g,function(c){
+    return {
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[c];
+  });
+}
+
+function line(label,value){
+  return '<div class="line"><span class="key">'+label+
+    '</span><span class="val">'+esc(value||'-')+
+    '</span></div>';
+}
+
+function makeCopy(copyName){
+  let d=val('date');
+  if(d) d=d.replace('T',' ');
+
+  return '<section class="bill">'+
+    '<div class="billhead">'+
+    '<div class="brand">SAND BILL</div>'+
+    '<div class="subtitle">DELIVERY DETAILS</div>'+
+    '<div class="copy">'+copyName+'</div>'+
+    '</div>'+
+    '<div class="demo">DEMO BILL TEMPLATE</div>'+
+    line('Order ID',val('order'))+
+    line('Trip No',val('trip'))+
+    line('Customer Name',val('customer'))+
+    line('Customer Mobile No',val('mobile'))+
+    line('Sand Quantity',val('qty'))+
+    line('Sand Supply Point',val('point'))+
+    line('Dispatch Date',d)+
+    line('Driver Name',val('driver'))+
+    line('Driver Mobile No',val('dmobile'))+
+    line('Vehicle No',val('vehicle'))+
+    '<div class="address"><b>Address:</b> '+
+    esc(val('address')||'-')+
+    '</div></section>';
+}
+
+function makeBill(){
+  document.getElementById('result').innerHTML=
+    makeCopy('Consumer Copy')+
+    makeCopy('Driver Copy');
+}
+
+function clearForm(){
+  document.querySelectorAll(
+    '.form input,.form textarea'
+  ).forEach(e=>e.value='');
+
+  document.getElementById('result').innerHTML='';
+  window.scrollTo(0,0);
+}
+
+makeBill();
+</script>
+
+</body>
 </html>
