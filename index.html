@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,6 +131,38 @@ button{
   word-break:break-word;
 }
 
+/* Address మాత్రమే ఒకే లైన్‌లో మొదలవుతుంది */
+.address-row{
+  display:flex;
+  align-items:flex-start;
+  gap:3px;
+  width:100%;
+  margin:4px 0;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.address-row .label-text{
+  flex:0 0 auto;
+  white-space:nowrap;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+
+.address-row .colon{
+  flex:0 0 auto;
+}
+
+.address-row .value-text{
+  flex:1;
+  min-width:0;
+  display:block;
+  text-align:left;
+  padding-right:0;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
 .footer{
   text-align:center;
   font-size:10px;
@@ -181,6 +214,12 @@ button{
   .value-text{
     text-align:right;
     padding-right:2px;
+  }
+
+  .address-row{
+    font-size:11px;
+    line-height:1.4;
+    margin:3px 0;
   }
 
   .footer{font-size:9px}
@@ -249,7 +288,7 @@ button{
     <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr1">-</span></div>
     <div class="row"><div class="label-text">Driver Mobile</div><div class="colon">:</div><span class="value-text" id="dm1">-</span></div>
     <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v1">-</span></div>
-    <div class="row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a1">-</span></div>
+    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a1">-</span></div>
 
     <div class="line"></div>
   </div>
@@ -270,7 +309,7 @@ button{
     <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr2">-</span></div>
     <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm2">-</span></div>
     <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v2">-</span></div>
-    <div class="row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
+    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
 
     <div class="line"></div>
   </div>
@@ -304,12 +343,10 @@ function updateBill(){
   fields.forEach(function(f){
     let value=getValue(f[0]);
 
-    /* Quantity దగ్గర Tons జోడిస్తుంది */
     if(f[0] === "quantity" && value !== "-"){
       value = value + " Tons";
     }
 
-    /* తేదీ: DD-MM-YY HH:MM AM/PM */
     if(f[0] === "date" && value !== "-"){
       const dateObj = new Date(value);
 
