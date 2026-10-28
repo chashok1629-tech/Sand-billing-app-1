@@ -74,7 +74,6 @@ body{
   font-family:"Courier New",monospace;
 }
 
-/* LOGO LEFT - TITLE CENTERED */
 .bill-header{
   display:flex;
   align-items:center;
@@ -178,33 +177,58 @@ body{
   overflow-wrap:anywhere;
 }
 
+/* CONTINUOUS 3-INCH THERMAL ROLL */
 @media print{
   @page{
     size:76mm auto;
-    margin:2mm;
+    margin:0;
   }
 
   html,body{
-    width:72mm;
-    margin:0;
-    padding:0;
-    background:#fff;
+    width:76mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    background:#fff !important;
+    overflow:visible !important;
   }
 
-  .form{display:none!important}
+  body{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  .form{
+    display:none !important;
+  }
 
   #receipt{
-    width:72mm;
-    max-width:72mm;
-    margin:0;
+    display:block !important;
+    width:72mm !important;
+    max-width:72mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    background:#fff !important;
+    overflow:visible !important;
   }
 
   .copy{
-    width:72mm;
-    padding:2mm;
-    margin:0;
-    page-break-inside:avoid;
-    break-inside:avoid;
+    display:block !important;
+    width:72mm !important;
+    max-width:72mm !important;
+    margin:0 !important;
+    padding:2mm !important;
+    border:0 !important;
+    background:#fff !important;
+    page-break-before:auto !important;
+    page-break-after:auto !important;
+    page-break-inside:avoid !important;
+    break-before:auto !important;
+    break-after:auto !important;
+    break-inside:avoid !important;
+  }
+
+  .bill-header{
+    gap:12px;
   }
 
   .gov-logo{
@@ -213,10 +237,7 @@ body{
     flex:0 0 54px;
   }
 
-  .bill-header{gap:12px}
-
   .bill-title .ap-sand{font-size:25px}
-
   .bill-title .management{font-size:13px}
 
   .row{
@@ -280,14 +301,10 @@ body{
 
 <div id="receipt">
 
-  <!-- CONSUMER COPY -->
   <div class="copy">
     <div class="bill-header">
-      <img
-        src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
-        class="gov-logo"
-        alt="Andhra Pradesh Emblem">
-
+      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+           class="gov-logo" alt="Andhra Pradesh Emblem">
       <div class="bill-title">
         <span class="ap-sand">AP SAND</span>
         <span class="management">MANAGEMENT SYSTEM</span>
@@ -311,14 +328,10 @@ body{
     <div class="line"></div>
   </div>
 
-  <!-- DRIVER COPY -->
   <div class="copy">
     <div class="bill-header">
-      <img
-        src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
-        class="gov-logo"
-        alt="Andhra Pradesh Emblem">
-
+      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+           class="gov-logo" alt="Andhra Pradesh Emblem">
       <div class="bill-title">
         <span class="ap-sand">AP SAND</span>
         <span class="management">MANAGEMENT SYSTEM</span>
