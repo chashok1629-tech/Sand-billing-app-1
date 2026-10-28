@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,7 @@
 <title>AP Sand Management System</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -69,7 +68,6 @@ body {
   background: white;
   color: black;
   font-family: "Courier New", Courier, monospace;
-  font-weight: 400;
 }
 
 .copy {
@@ -79,36 +77,49 @@ body {
   background: white;
   border: none;
   font-family: "Courier New", Courier, monospace;
-  font-weight: 400;
 }
 
-/* Sample bill heading */
-.heading {
-  text-align: center;
+/* Government logo beside title */
+.bill-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 22px;
+}
+
+.gov-logo {
+  display: block;
+  width: 29px;
+  height: 34px;
+  object-fit: contain;
+  flex: 0 0 29px;
+}
+
+.bill-title {
+  min-width: 0;
+  text-align: left;
   font-weight: 900;
   line-height: 1.05;
-  overflow-wrap: anywhere;
 }
 
-.heading .ap-sand {
+.bill-title .ap-sand {
   display: block;
-  font-size: 25px;
-  letter-spacing: 0;
+  font-size: 23px;
 }
 
-.heading .management {
+.bill-title .management {
   display: block;
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: -0.4px;
+  white-space: nowrap;
 }
 
 .subtitle {
   text-align: center;
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
-  font-weight: 400;
   margin-top: 6px;
   margin-bottom: 7px;
 }
@@ -118,29 +129,25 @@ body {
   margin: 7px 0;
 }
 
-/* Labels left, colon in the centre, values right */
+/* Labels left, colon centre, values right */
 .row {
   display: grid;
   grid-template-columns: 40% 5% 55%;
   align-items: start;
   width: 100%;
-  gap: 0;
   margin: 4px 0;
   font-size: 12px;
   line-height: 1.45;
-  font-weight: 400;
 }
 
 .label-text {
   text-align: left;
   min-width: 0;
   overflow-wrap: anywhere;
-  word-break: normal;
 }
 
 .colon {
   text-align: center;
-  font-weight: 400;
 }
 
 .value-text {
@@ -148,12 +155,9 @@ body {
   text-align: right;
   padding-right: 2px;
   min-width: 0;
-  font-weight: 400;
   overflow-wrap: anywhere;
-  word-break: normal;
 }
 
-/* Address starts on the same line */
 .address-row {
   display: flex;
   align-items: flex-start;
@@ -162,13 +166,11 @@ body {
   margin: 4px 0;
   font-size: 12px;
   line-height: 1.45;
-  font-weight: 400;
 }
 
 .address-row .label-text {
   flex: 0 0 auto;
   white-space: nowrap;
-  overflow-wrap: normal;
 }
 
 .address-row .colon {
@@ -189,8 +191,7 @@ body {
     margin: 2mm;
   }
 
-  html,
-  body {
+  html, body {
     width: 72mm;
     margin: 0;
     padding: 0;
@@ -211,34 +212,24 @@ body {
     width: 72mm;
     padding: 2mm;
     margin: 0;
-    border: none;
     page-break-inside: avoid;
     break-inside: avoid;
   }
 
-  .heading .ap-sand {
-    font-size: 25px;
+  .gov-logo {
+    width: 27px;
+    height: 32px;
+    flex-basis: 27px;
   }
 
-  .heading .management {
-    font-size: 16px;
-  }
-
-  .subtitle {
-    font-size: 14px;
-  }
+  .bill-title .ap-sand { font-size: 22px; }
+  .bill-title .management { font-size: 13px; }
 
   .row {
     grid-template-columns: 40% 5% 55%;
-    gap: 0;
     font-size: 12px;
     line-height: 1.4;
     margin: 3px 0;
-  }
-
-  .value-text {
-    text-align: right;
-    padding-right: 2px;
   }
 
   .address-row {
@@ -297,9 +288,14 @@ body {
 
   <!-- Consumer Copy -->
   <div class="copy">
-    <div class="heading">
-      <span class="ap-sand">AP SAND</span>
-      <span class="management">MANAGEMENT SYSTEM</span>
+    <div class="bill-header">
+      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+           class="gov-logo"
+           alt="Andhra Pradesh Emblem">
+      <div class="bill-title">
+        <span class="ap-sand">AP SAND</span>
+        <span class="management">MANAGEMENT SYSTEM</span>
+      </div>
     </div>
 
     <div class="subtitle">Consumer Copy</div>
@@ -322,9 +318,14 @@ body {
 
   <!-- Driver Copy -->
   <div class="copy">
-    <div class="heading">
-      <span class="ap-sand">AP SAND</span>
-      <span class="management">MANAGEMENT SYSTEM</span>
+    <div class="bill-header">
+      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+           class="gov-logo"
+           alt="Andhra Pradesh Emblem">
+      <div class="bill-title">
+        <span class="ap-sand">AP SAND</span>
+        <span class="management">MANAGEMENT SYSTEM</span>
+      </div>
     </div>
 
     <div class="subtitle">Driver Copy</div>
