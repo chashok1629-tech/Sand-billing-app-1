@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="te">
 <head>
@@ -37,10 +36,67 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 #billQR img{display:block;width:1in;height:1in;max-width:1in;object-fit:contain;margin:0 auto}
 #qrThanks{font-size:12px;font-weight:bold;text-align:center;margin-top:5px}
 
+/* QR స్కాన్ చేసినప్పుడు కనిపించే కొత్త పేజీ */
+#registrationPage{
+ display:none;
+ max-width:600px;
+ margin:10px auto;
+ padding:20px;
+ background:#fff;
+ border:1px solid #999;
+ border-radius:8px;
+ font-family:Arial,sans-serif;
+}
+#registrationPage h2{
+ text-align:center;
+ font-size:21px;
+ margin:0 0 5px;
+}
+#registrationPage .reg-subtitle{
+ text-align:center;
+ font-size:13px;
+ margin-bottom:18px;
+}
+.reg-row{
+ display:grid;
+ grid-template-columns:minmax(0, 42%) 12px minmax(0, 1fr);
+ gap:4px;
+ padding:11px 0;
+ border-bottom:1px solid #ddd;
+ font-size:14px;
+ line-height:1.4;
+}
+.reg-label{font-weight:bold;overflow-wrap:anywhere}
+.reg-colon{text-align:center}
+.reg-value{overflow-wrap:anywhere;word-break:break-word}
+#registrationPage .reg-footer{
+ text-align:center;
+ font-size:12px;
+ margin-top:20px;
+ color:#444;
+}
+#registrationPage .reg-print{
+ width:100%;
+ padding:12px;
+ margin-top:18px;
+ border:0;
+ border-radius:4px;
+ background:#176ca5;
+ color:#fff;
+ font-size:16px;
+ font-weight:bold;
+}
+
+@media(max-width:380px){
+ #registrationPage{padding:12px}
+ .reg-row{font-size:12px;grid-template-columns:minmax(0, 40%) 10px minmax(0, 1fr)}
+}
+
 @media print{
  @page{size:76mm auto;margin:0}
  html,body{width:76mm!important;margin:0!important;padding:0!important;background:white!important}
  .form{display:none!important}
+ #registrationPage{display:none!important}
  #receipt{width:72mm!important;max-width:72mm!important;margin:0!important;padding:0!important}
  #receipt,#receipt *{color:black!important;-webkit-text-fill-color:black!important}
  .copy{width:72mm!important;padding:1mm 2mm!important;break-inside:avoid!important}
@@ -129,6 +185,15 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <button type="button" onclick="resetForm()">New Bill / Clear Form</button>
 </div>
 
+<!-- QR లింక్ తెరిచినప్పుడు ఈ కొత్త పేజీ కనిపిస్తుంది -->
+<div id="registrationPage">
+ <h2>AP SAND MANAGEMENT SYSTEM</h2>
+ <div class="reg-subtitle">Registration Details</div>
+ <div id="registrationRows"></div>
+ <div class="reg-footer">AP Sand Management System</div>
+ <button class="reg-print" type="button" onclick="window.print()">Print Registration Details</button>
+</div>
+
 <div id="receipt">
 
   <div class="copy">
@@ -187,7 +252,6 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <script>
 const STORAGE_KEY="apSandOrders_v1";
 
-/* కొత్త QR తెరిచే వెబ్‌సైట్ లింక్ */
 const REGISTRATION_URL =
 "https://chashok1629-tech.github.io/Sand---billing-/";
 
@@ -311,13 +375,32 @@ function updateBill(){
  });
 }
 
-/* పాత QR స్థానంలో కొత్త వెబ్‌సైట్ లింక్ QR */
+/* Registration వివరాలతో ప్రత్యేక QR లింక్ తయారు చేయడం */
+function makeRegistrationURL(){
+ const details={
+  regId:getValue("regId"),
+  consumerName:getValue("consumerName"),
+  consumerMobile:getValue("consumerMobile"),
+  constructionName:getValue("constructionName"),
+  regDateTime:formatDate(getValue("regDateTime")),
+  regType:getValue("regType"),
+  regQty:getValue("regQty"),
+  regAddress:getValue("regAddress")
+ };
+
+ const json=JSON.stringify(details);
+ const encoded=btoa(unescape(encodeURIComponent(json)));
+
+ return REGISTRATION_URL+"#registration="+encoded;
+}
+
+/* QR కోడ్ తయారు చేయడం */
 function makeQR(callback){
  const section=document.getElementById("billQR");
  section.innerHTML="";
 
  const img=document.createElement("img");
- img.alt="AP Sand Billing QR Code";
+ img.alt="AP Sand Registration Details QR Code";
 
  img.onload=function(){
   const thanks=document.createElement("div");
@@ -334,12 +417,79 @@ function makeQR(callback){
   if(typeof callback==="function")callback(false);
  };
 
+ const qrURL=makeRegistrationURL();
+
  img.src=
   "https://api.qrserver.com/v1/create-qr-code/"+
   "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
-  encodeURIComponent(REGISTRATION_URL);
+  encodeURIComponent(qrURL);
 
  section.appendChild(img);
+}
+
+/* QR లింక్ ద్వారా వచ్చిన వివరాలను కొత్త పేజీలో చూపించడం */
+function openRegistrationPage(){
+ const hash=window.location.hash;
+
+ if(!hash.startsWith("#registration="))return;
+
+ try{
+  const encoded=hash.substring("#registration=".length);
+  const details=JSON.parse(
+   decodeURIComponent(escape(atob(encoded)))
+  );
+
+  const rows=[
+   ["Registration ID",details.regId],
+   ["Consumer Name",details.consumerName],
+   ["Consumer Mobile Number",details.consumerMobile],
+   ["Construction Name",details.constructionName],
+   ["Registration Date and Time",details.regDateTime],
+   ["Registration Type",details.regType],
+   ["Registration QTY (MT)",details.regQty],
+   ["Address",details.regAddress]
+  ];
+
+  const container=document.getElementById("registrationRows");
+  container.innerHTML="";
+
+  rows.forEach(item=>{
+   const row=document.createElement("div");
+   row.className="reg-row";
+
+   const label=document.createElement("div");
+   label.className="reg-label";
+   label.textContent=item[0];
+
+   const colon=document.createElement("div");
+   colon.className="reg-colon";
+   colon.textContent=":";
+
+   const value=document.createElement("div");
+   value.className="reg-value";
+   value.textContent=(item[1]&&item[1]!=="-")?item[1]:"-";
+
+   row.appendChild(label);
+   row.appendChild(colon);
+   row.appendChild(value);
+   container.appendChild(row);
+  });
+
+  document.getElementById("entryForm").style.display="none";
+  document.getElementById("receipt").style.display="none";
+  document.getElementById("registrationPage").style.display="block";
+  document.title="Registration Details - AP Sand";
+
+ }catch(e){
+  document.getElementById("entryForm").style.display="none";
+  document.getElementById("receipt").style.display="none";
+
+  const page=document.getElementById("registrationPage");
+  page.style.display="block";
+  page.innerHTML=
+   "<h2>Registration Details</h2>"+
+   "<p>ఈ QR లింక్‌లోని వివరాలను చదవలేకపోయాము. సరైన QR కోడ్‌ను స్కాన్ చేయండి.</p>";
+ }
 }
 
 function previewBill(){
@@ -390,6 +540,9 @@ fieldIds.filter(id=>id!=="order").forEach(id=>{
 });
 
 updateBill();
+
+/* QR లింక్‌తో పేజీ తెరిస్తే Registration Details చూపించు */
+openRegistrationPage();
 </script>
 </body>
 </html>
