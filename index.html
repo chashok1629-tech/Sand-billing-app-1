@@ -60,17 +60,17 @@ body{
   width:100%;
   max-width:400px;
   margin:auto;
-  background:white;
-  color:black;
+  background:#fff;
+  color:#000;
   font-family:"Courier New",monospace;
 }
 
 .copy{
   width:100%;
-  padding:8px;
-  margin:0 0 12px;
-  background:white;
-  border:none;
+  padding:5px;
+  margin:0;
+  background:#fff;
+  border:0;
   font-family:"Courier New",monospace;
 }
 
@@ -78,52 +78,51 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:12px;
+  gap:7px;
   width:100%;
   font-family:Arial,Helvetica,sans-serif;
 }
 
 .gov-logo{
   display:block;
-  width:54px;
-  height:54px;
+  width:40px;
+  height:40px;
   object-fit:contain;
-  flex:0 0 54px;
+  flex:0 0 40px;
 }
 
 .bill-title{
   min-width:0;
   text-align:center;
   font-weight:900;
-  line-height:1.05;
+  line-height:1;
 }
 
 .bill-title .ap-sand{
   display:block;
-  font-size:27px;
+  font-size:22px;
   white-space:nowrap;
   text-align:center;
 }
 
 .bill-title .management{
   display:block;
-  font-size:14px;
+  font-size:10px;
   white-space:nowrap;
-  letter-spacing:-0.4px;
+  letter-spacing:-0.3px;
   text-align:center;
 }
 
 .subtitle{
   text-align:center;
   font-family:"Courier New",monospace;
-  font-size:14px;
-  margin-top:6px;
-  margin-bottom:7px;
+  font-size:11px;
+  margin:2px 0;
 }
 
 .line{
   border-top:1px solid #000;
-  margin:7px 0;
+  margin:3px 0;
 }
 
 .row{
@@ -131,9 +130,9 @@ body{
   grid-template-columns:40% 5% 55%;
   align-items:start;
   width:100%;
-  margin:4px 0;
-  font-size:12px;
-  line-height:1.45;
+  margin:1px 0;
+  font-size:10px;
+  line-height:1.2;
 }
 
 .label-text{
@@ -147,7 +146,7 @@ body{
 .value-text{
   display:block;
   text-align:right;
-  padding-right:2px;
+  padding-right:0;
   min-width:0;
   overflow-wrap:anywhere;
 }
@@ -157,9 +156,9 @@ body{
   align-items:flex-start;
   gap:2px;
   width:100%;
-  margin:4px 0;
-  font-size:12px;
-  line-height:1.45;
+  margin:1px 0;
+  font-size:10px;
+  line-height:1.2;
 }
 
 .address-row .label-text{
@@ -177,7 +176,7 @@ body{
   overflow-wrap:anywhere;
 }
 
-/* CONTINUOUS 3-INCH THERMAL ROLL */
+/* COMPACT CONTINUOUS THERMAL ROLL PRINT */
 @media print{
   @page{
     size:76mm auto;
@@ -207,7 +206,6 @@ body{
     max-width:72mm !important;
     margin:0 !important;
     padding:0 !important;
-    background:#fff !important;
     overflow:visible !important;
   }
 
@@ -216,9 +214,8 @@ body{
     width:72mm !important;
     max-width:72mm !important;
     margin:0 !important;
-    padding:2mm !important;
+    padding:1mm 2mm !important;
     border:0 !important;
-    background:#fff !important;
     page-break-before:auto !important;
     page-break-after:auto !important;
     page-break-inside:avoid !important;
@@ -227,30 +224,35 @@ body{
     break-inside:avoid !important;
   }
 
-  .bill-header{
-    gap:12px;
-  }
+  .bill-header{gap:7px !important}
 
   .gov-logo{
-    width:54px;
-    height:54px;
-    flex:0 0 54px;
+    width:40px !important;
+    height:40px !important;
+    flex:0 0 40px !important;
   }
 
-  .bill-title .ap-sand{font-size:25px}
-  .bill-title .management{font-size:13px}
+  .bill-title .ap-sand{font-size:22px !important}
+  .bill-title .management{font-size:10px !important}
+
+  .subtitle{
+    font-size:11px !important;
+    margin:2px 0 !important;
+  }
+
+  .line{margin:3px 0 !important}
 
   .row{
-    grid-template-columns:40% 5% 55%;
-    font-size:12px;
-    line-height:1.4;
-    margin:3px 0;
+    grid-template-columns:40% 5% 55% !important;
+    font-size:10px !important;
+    line-height:1.2 !important;
+    margin:1px 0 !important;
   }
 
   .address-row{
-    font-size:12px;
-    line-height:1.4;
-    margin:3px 0;
+    font-size:10px !important;
+    line-height:1.2 !important;
+    margin:1px 0 !important;
   }
 }
 </style>
