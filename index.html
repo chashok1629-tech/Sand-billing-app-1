@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,14 +33,15 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 .address-row .colon{flex:0 0 auto}
 .address-row .value-text{flex:1;min-width:0;text-align:left;overflow-wrap:anywhere}
 
-/* QR: only the QR image, no heading or text underneath */
+/* QR code: only image, without the extra line near the QR */
 .qr-title{display:none!important}
 #billQR{
   display:block;
   text-align:center;
   margin:5px 0;
-  padding:3px;
-  border-top:1px solid #000;
+  padding:0;
+  border-top:none;
+  border-bottom:none;
   page-break-inside:avoid;
   break-inside:avoid;
 }
@@ -69,7 +71,16 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
   .line{border-top:1.5px solid #000!important;margin:3px 0!important}
   .row{grid-template-columns:40% 5% 55%!important;font-size:11px!important;line-height:1.25!important;margin:1px 0!important}
   .address-row{font-size:11px!important;line-height:1.25!important;margin:1px 0!important}
-  #billQR{display:block!important;text-align:center!important;margin:3px 0!important;padding:2px!important;page-break-inside:avoid!important;break-inside:avoid!important}
+  #billQR{
+    display:block!important;
+    text-align:center!important;
+    margin:3px 0!important;
+    padding:0!important;
+    border-top:none!important;
+    border-bottom:none!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
   #billQR img{display:block!important;width:1in!important;height:1in!important;max-width:1in!important;margin:0 auto!important}
   .qr-details{display:none!important}
 }
@@ -132,13 +143,7 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <input id="regDateTime" type="datetime-local" step="1">
 
 <label>Registration Type</label>
-<select id="regType">
-<option value="">Select Registration Type</option>
-<option>Individual</option>
-<option>Government</option>
-<option>Commercial</option>
-<option>Other</option>
-</select>
+<input id="regType" type="text" placeholder="Enter Registration Type">
 
 <label>Registration QTY (in MT)</label>
 <input id="regQty" type="number" step="any" placeholder="Enter Quantity in MT">
@@ -208,7 +213,8 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 
 <script>
 function getValue(id){
-  return document.getElementById(id).value.trim() || "-";
+  const element=document.getElementById(id);
+  return element ? element.value.trim() || "-" : "-";
 }
 
 function put(id,value){
@@ -262,7 +268,7 @@ function updateBill(){
   });
 }
 
-function generateQR(){
+function generateQR(callback){
   const fields=[
     ["Registration ID","regId"],
     ["Consumer Name","consumerName"],
@@ -290,8 +296,14 @@ function generateQR(){
 
   const img=document.createElement("img");
   img.alt="Registration QR Code";
-  img.width=96;
-  img.height=96;
+
+  img.onload=function(){
+    if(typeof callback==="function") callback();
+  };
+
+  img.onerror=function(){
+    alert("QR Code లోడ్ కాలేదు. ఇంటర్నెట్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.");
+  };
 
   img.src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
     encodeURIComponent(details);
@@ -301,37 +313,18 @@ function generateQR(){
 
 function printBill(){
   updateBill();
-  generateQR();
 
-  const img=document.querySelector("#billQR img");
+  const oldQR=document.querySelector("#billQR img");
+  if(oldQR) oldQR.remove();
 
-  if(!img){
-    alert("QR Code తయారు కాలేదు. మళ్లీ ప్రయత్నించండి.");
-    return;
-  }
-
-  if(img.complete && img.naturalWidth>0){
+  generateQR(function(){
     window.print();
-    return;
-  }
-
-  img.onload=function(){
-    window.print();
-  };
-
-  img.onerror=function(){
-    alert("QR Code లోడ్ కాలేదు. ఇంటర్నెట్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.");
-  };
+  });
 }
 
 function resetAll(){
-  document.querySelectorAll("#entryForm input,#entryForm textarea").forEach(function(el){
-    el.value="";
-  });
-
-  document.querySelectorAll("#entryForm select").forEach(function(el){
-    el.selectedIndex=0;
-  });
+  document.querySelectorAll("#entryForm input,#entryForm textarea")
+    .forEach(function(el){el.value="";});
 
   const qr=document.getElementById("billQR");
   if(qr) qr.remove();
@@ -339,7 +332,7 @@ function resetAll(){
   updateBill();
 }
 
-document.querySelectorAll("#entryForm input,#entryForm textarea,#entryForm select")
+document.querySelectorAll("#entryForm input,#entryForm textarea")
 .forEach(function(el){
   el.addEventListener("input",updateBill);
   el.addEventListener("change",updateBill);
