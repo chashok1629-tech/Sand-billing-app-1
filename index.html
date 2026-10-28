@@ -7,7 +7,9 @@
 <title>AP Sand Management System</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -79,22 +81,22 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-/* Government logo beside title */
+/* Government logo beside AP SAND title */
 .bill-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 1px;
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .gov-logo {
   display: block;
-  width: 29px;
-  height: 34px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  flex: 0 0 29px;
+  flex: 0 0 48px;
 }
 
 .bill-title {
@@ -107,12 +109,13 @@ body {
 .bill-title .ap-sand {
   display: block;
   font-size: 23px;
+  white-space: nowrap;
 }
 
 .bill-title .management {
   display: block;
-  font-size: 14px;
-  letter-spacing: -0.4px;
+  font-size: 13px;
+  letter-spacing: -0.5px;
   white-space: nowrap;
 }
 
@@ -191,7 +194,8 @@ body {
     margin: 2mm;
   }
 
-  html, body {
+  html,
+  body {
     width: 72mm;
     margin: 0;
     padding: 0;
@@ -216,14 +220,25 @@ body {
     break-inside: avoid;
   }
 
+  /* Larger logo in printed bill */
   .gov-logo {
-    width: 27px;
-    height: 32px;
-    flex-basis: 27px;
+    width: 45px;
+    height: 45px;
+    flex: 0 0 45px;
   }
 
-  .bill-title .ap-sand { font-size: 22px; }
-  .bill-title .management { font-size: 13px; }
+  .bill-header {
+    gap: 1px;
+  }
+
+  .bill-title .ap-sand {
+    font-size: 22px;
+  }
+
+  .bill-title .management {
+    font-size: 12px;
+    letter-spacing: -0.5px;
+  }
 
   .row {
     grid-template-columns: 40% 5% 55%;
@@ -256,10 +271,12 @@ body {
   <input id="customer" placeholder="Enter Customer Name">
 
   <label>Customer Mobile No</label>
-  <input id="mobile" type="tel" placeholder="Enter Customer Mobile No">
+  <input id="mobile" type="tel"
+         placeholder="Enter Customer Mobile No">
 
   <label>Sand Quantity (Tonnes)</label>
-  <input id="quantity" type="number" placeholder="Enter Sand Quantity">
+  <input id="quantity" type="number"
+         placeholder="Enter Sand Quantity">
 
   <label>Sand Supply Point Name</label>
   <input id="supply" placeholder="Enter Supply Point Name">
@@ -271,27 +288,40 @@ body {
   <input id="driver" placeholder="Enter Driver Name">
 
   <label>Driver Mobile Number</label>
-  <input id="driverMobile" type="tel" placeholder="Enter Driver Mobile No">
+  <input id="driverMobile" type="tel"
+         placeholder="Enter Driver Mobile No">
 
   <label>Vehicle Number</label>
   <input id="vehicle" placeholder="Enter Vehicle Number">
 
   <label>Address</label>
-  <textarea id="address" rows="2" placeholder="Enter Address"></textarea>
+  <textarea id="address" rows="2"
+            placeholder="Enter Address"></textarea>
 
-  <button type="button" onclick="updateBill()">Preview Bill</button>
-  <button type="button" onclick="printBill()">Print 3-inch Bill / PDF</button>
-  <button type="button" onclick="resetBill()">Clear All</button>
+  <button type="button" onclick="updateBill()">
+    Preview Bill
+  </button>
+
+  <button type="button" onclick="printBill()">
+    Print 3-inch Bill / PDF
+  </button>
+
+  <button type="button" onclick="resetBill()">
+    Clear All
+  </button>
 </div>
 
 <div id="receipt">
 
   <!-- Consumer Copy -->
   <div class="copy">
+
     <div class="bill-header">
-      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
-           class="gov-logo"
-           alt="Andhra Pradesh Emblem">
+      <img
+        src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+        class="gov-logo"
+        alt="Andhra Pradesh Emblem">
+
       <div class="bill-title">
         <span class="ap-sand">AP SAND</span>
         <span class="management">MANAGEMENT SYSTEM</span>
@@ -301,27 +331,84 @@ body {
     <div class="subtitle">Consumer Copy</div>
     <div class="line"></div>
 
-    <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o1">-</span></div>
-    <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t1">-</span></div>
-    <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c1">-</span></div>
-    <div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m1">-</span></div>
-    <div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q1">-</span></div>
-    <div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s1">-</span></div>
-    <div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d1">-</span></div>
-    <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr1">-</span></div>
-    <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm1">-</span></div>
-    <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v1">-</span></div>
-    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a1">-</span></div>
+    <div class="row">
+      <div class="label-text">Order Id</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="o1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Trip No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="t1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Customer Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="c1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Customer Mobile No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="m1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Sand Quantity</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="q1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Sand Supply Point Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="s1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Dispatch Date</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="d1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Driver Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="dr1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Driver Mobile No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="dm1">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Vehicle No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="v1">-</span>
+    </div>
+
+    <div class="address-row">
+      <div class="label-text">Address</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="a1">-</span>
+    </div>
 
     <div class="line"></div>
   </div>
 
   <!-- Driver Copy -->
   <div class="copy">
+
     <div class="bill-header">
-      <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
-           class="gov-logo"
-           alt="Andhra Pradesh Emblem">
+      <img
+        src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+        class="gov-logo"
+        alt="Andhra Pradesh Emblem">
+
       <div class="bill-title">
         <span class="ap-sand">AP SAND</span>
         <span class="management">MANAGEMENT SYSTEM</span>
@@ -331,17 +418,71 @@ body {
     <div class="subtitle">Driver Copy</div>
     <div class="line"></div>
 
-    <div class="row"><div class="label-text">Order Id</div><div class="colon">:</div><span class="value-text" id="o2">-</span></div>
-    <div class="row"><div class="label-text">Trip No</div><div class="colon">:</div><span class="value-text" id="t2">-</span></div>
-    <div class="row"><div class="label-text">Customer Name</div><div class="colon">:</div><span class="value-text" id="c2">-</span></div>
-    <div class="row"><div class="label-text">Customer Mobile No</div><div class="colon">:</div><span class="value-text" id="m2">-</span></div>
-    <div class="row"><div class="label-text">Sand Quantity</div><div class="colon">:</div><span class="value-text" id="q2">-</span></div>
-    <div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s2">-</span></div>
-    <div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d2">-</span></div>
-    <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr2">-</span></div>
-    <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm2">-</span></div>
-    <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v2">-</span></div>
-    <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
+    <div class="row">
+      <div class="label-text">Order Id</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="o2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Trip No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="t2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Customer Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="c2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Customer Mobile No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="m2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Sand Quantity</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="q2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Sand Supply Point Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="s2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Dispatch Date</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="d2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Driver Name</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="dr2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Driver Mobile No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="dm2">-</span>
+    </div>
+
+    <div class="row">
+      <div class="label-text">Vehicle No</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="v2">-</span>
+    </div>
+
+    <div class="address-row">
+      <div class="label-text">Address</div>
+      <div class="colon">:</div>
+      <span class="value-text" id="a2">-</span>
+    </div>
 
     <div class="line"></div>
   </div>
@@ -384,15 +525,22 @@ function updateBill() {
 
       if (!isNaN(dateObj.getTime())) {
         const day = String(dateObj.getDate()).padStart(2, "0");
-        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const month = String(
+          dateObj.getMonth() + 1
+        ).padStart(2, "0");
         const year = dateObj.getFullYear();
 
         let hours = dateObj.getHours();
-        const minutes = String(dateObj.getMinutes()).padStart(2, "0");
-        const seconds = String(dateObj.getSeconds()).padStart(2, "0");
-        const ampm = hours >= 12 ? "PM" : "AM";
+        const minutes = String(
+          dateObj.getMinutes()
+        ).padStart(2, "0");
+        const seconds = String(
+          dateObj.getSeconds()
+        ).padStart(2, "0");
 
+        const ampm = hours >= 12 ? "PM" : "AM";
         hours = hours % 12 || 12;
+
         const formattedHours = String(hours).padStart(2, "0");
 
         value = `${day}-${month}-${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
