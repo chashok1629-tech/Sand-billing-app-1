@@ -33,15 +33,13 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 .address-row .colon{flex:0 0 auto}
 .address-row .value-text{flex:1;min-width:0;text-align:left;overflow-wrap:anywhere}
 
-/* QR code: only image, without the extra line near the QR */
-.qr-title{display:none!important}
+.qr-title{display:block}
 #billQR{
   display:block;
   text-align:center;
-  margin:5px 0;
+  margin:18px 0 5px;
   padding:0;
-  border-top:none;
-  border-bottom:none;
+  border:0;
   page-break-inside:avoid;
   break-inside:avoid;
 }
@@ -74,21 +72,25 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
   #billQR{
     display:block!important;
     text-align:center!important;
-    margin:3px 0!important;
+    margin:18px 0 5px!important;
     padding:0!important;
-    border-top:none!important;
-    border-bottom:none!important;
+    border:0!important;
     page-break-inside:avoid!important;
     break-inside:avoid!important;
   }
-  #billQR img{display:block!important;width:1in!important;height:1in!important;max-width:1in!important;margin:0 auto!important}
+  #billQR img{
+    display:block!important;
+    width:1in!important;
+    height:1in!important;
+    max-width:1in!important;
+    margin:0 auto!important;
+  }
   .qr-details{display:none!important}
 }
 </style>
 </head>
 
 <body>
-
 <div class="form" id="entryForm">
 <h2>Sand Bill Entry</h2>
 
@@ -151,15 +153,12 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <label>Registration Address</label>
 <textarea id="regAddress" rows="3" placeholder="Enter Registration Address"></textarea>
 
-<button type="button" onclick="updateBill()">Preview Bill</button>
-<button type="button" onclick="generateQR()">Generate Registration QR Code</button>
+<button type="button" onclick="previewBill()">Preview Bill</button>
 <button type="button" onclick="printBill()">Print 3-inch Bill / PDF</button>
 <button type="button" onclick="resetAll()">Clear All</button>
 </div>
 
 <div id="receipt">
-
-  <!-- CONSUMER COPY -->
   <div class="copy">
     <div class="bill-header">
       <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
@@ -184,7 +183,6 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
     <div class="line"></div>
   </div>
 
-  <!-- DRIVER COPY -->
   <div class="copy">
     <div class="bill-header">
       <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
@@ -209,16 +207,35 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
     <div class="line"></div>
   </div>
 
+  <div id="billQR"></div>
 </div>
 
 <script>
 function getValue(id){
-  const element=document.getElementById(id);
-  return element ? element.value.trim() || "-" : "-";
+  const el=document.getElementById(id);
+  return el ? el.value.trim() || "-" : "-";
 }
 
 function put(id,value){
   document.getElementById(id).textContent=value;
+}
+
+function formatDate(value){
+  if(!value || value==="-") return "-";
+  const dt=new Date(value);
+  if(isNaN(dt.getTime())) return value;
+
+  const day=String(dt.getDate()).padStart(2,"0");
+  const month=String(dt.getMonth()+1).padStart(2,"0");
+  const year=dt.getFullYear();
+  let hours=dt.getHours();
+  const minutes=String(dt.getMinutes()).padStart(2,"0");
+  const seconds=String(dt.getSeconds()).padStart(2,"0");
+  const ampm=hours>=12?"PM":"AM";
+  hours=hours%12||12;
+
+  return day+"-"+month+"-"+year+" "+
+    String(hours).padStart(2,"0")+":"+minutes+":"+seconds+" "+ampm;
 }
 
 function updateBill(){
@@ -236,39 +253,16 @@ function updateBill(){
     ["address","a1","a2"]
   ];
 
-  fields.forEach(function(field){
-    let value=getValue(field[0]);
-
-    if(field[0]==="quantity" && value!=="-"){
-      value+=" Tons";
-    }
-
-    if(field[0]==="date" && value!=="-"){
-      const dt=new Date(value);
-
-      if(!isNaN(dt.getTime())){
-        const day=String(dt.getDate()).padStart(2,"0");
-        const month=String(dt.getMonth()+1).padStart(2,"0");
-        const year=dt.getFullYear();
-        let hours=dt.getHours();
-        const minutes=String(dt.getMinutes()).padStart(2,"0");
-        const seconds=String(dt.getSeconds()).padStart(2,"0");
-        const ampm=hours>=12?"PM":"AM";
-
-        hours=hours%12||12;
-
-        value=day+"-"+month+"-"+year+" "+
-          String(hours).padStart(2,"0")+":"+
-          minutes+":"+seconds+" "+ampm;
-      }
-    }
-
-    put(field[1],value);
-    put(field[2],value);
+  fields.forEach(function(f){
+    let value=getValue(f[0]);
+    if(f[0]==="quantity" && value!=="-") value+=" Tons";
+    if(f[0]==="date") value=formatDate(value);
+    put(f[1],value);
+    put(f[2],value);
   });
 }
 
-function generateQR(callback){
+function makeQR(callback){
   const fields=[
     ["Registration ID","regId"],
     ["Consumer Name","consumerName"],
@@ -280,66 +274,60 @@ function generateQR(callback){
     ["Registration Address","regAddress"]
   ];
 
-  const details=fields.map(function(field){
-    return field[0]+": "+getValue(field[1]);
+  const details=fields.map(function(f){
+    let value=getValue(f[1]);
+    if(f[1]==="regDateTime") value=formatDate(value);
+    return f[0]+": "+value;
   }).join("\n");
 
-  let section=document.getElementById("billQR");
-
-  if(!section){
-    section=document.createElement("div");
-    section.id="billQR";
-    document.getElementById("receipt").appendChild(section);
-  }
-
+  const section=document.getElementById("billQR");
   section.innerHTML="";
 
   const img=document.createElement("img");
   img.alt="Registration QR Code";
-
   img.onload=function(){
-    if(typeof callback==="function") callback();
+    if(typeof callback==="function") callback(true);
   };
-
   img.onerror=function(){
-    alert("QR Code లోడ్ కాలేదు. ఇంటర్నెట్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.");
+    section.innerHTML="";
+    alert("QR కోడ్ తయారు కాలేదు. ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.");
+    if(typeof callback==="function") callback(false);
   };
 
-  img.src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
-    encodeURIComponent(details);
-
+  img.src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+encodeURIComponent(details);
   section.appendChild(img);
+}
+
+function previewBill(){
+  updateBill();
+  makeQR(function(success){
+    if(success){
+      document.getElementById("receipt").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  });
 }
 
 function printBill(){
   updateBill();
-
-  const oldQR=document.querySelector("#billQR img");
-  if(oldQR) oldQR.remove();
-
-  generateQR(function(){
-    window.print();
+  makeQR(function(success){
+    if(success) window.print();
   });
 }
 
 function resetAll(){
-  document.querySelectorAll("#entryForm input,#entryForm textarea")
-    .forEach(function(el){el.value="";});
-
-  const qr=document.getElementById("billQR");
-  if(qr) qr.remove();
-
+  document.querySelectorAll("#entryForm input,#entryForm textarea").forEach(function(el){
+    el.value="";
+  });
+  document.getElementById("billQR").innerHTML="";
   updateBill();
 }
 
-document.querySelectorAll("#entryForm input,#entryForm textarea")
-.forEach(function(el){
+document.querySelectorAll("#entryForm input,#entryForm textarea").forEach(function(el){
   el.addEventListener("input",updateBill);
   el.addEventListener("change",updateBill);
 });
 
 updateBill();
 </script>
-
 </body>
 </html>
