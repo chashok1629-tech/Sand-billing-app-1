@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="te">
 <head>
@@ -129,7 +130,6 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 </div>
 
 <div id="receipt">
-
   <div class="copy">
     <div class="bill-header">
       <img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png" class="gov-logo" alt="Andhra Pradesh Emblem">
@@ -186,9 +186,9 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <script>
 const STORAGE_KEY="apSandOrders_v1";
 
-/* కొత్త QR తెరిచే వెబ్‌సైట్ లింక్ */
+/* QR scan చేసినప్పుడు తెరుచుకునే AP Sand ప్రభుత్వ లింక్ */
 const REGISTRATION_URL =
-"https://chashok1629-tech.github.io/Sand---billing-/";
+"https://sand.ap.gov.in/#/freesand/details/5C5CD6F0491035E0E0638C2D600A21B7";
 
 const fieldIds=[
  "order","trip","customer","mobile","quantity","supply","date",
@@ -310,20 +310,19 @@ function updateBill(){
  });
 }
 
-/* పాత QR స్థానంలో కొత్త వెబ్‌సైట్ లింక్ QR */
+/* QR లో స్థిరమైన AP Sand లింక్ ఉంటుంది */
 function makeQR(callback){
  const section=document.getElementById("billQR");
  section.innerHTML="";
 
  const img=document.createElement("img");
- img.alt="AP Sand Billing QR Code";
+ img.alt="AP Sand Government Website QR Code";
 
  img.onload=function(){
   const thanks=document.createElement("div");
   thanks.id="qrThanks";
   thanks.textContent="Thank You";
   section.appendChild(thanks);
-
   if(typeof callback==="function")callback(true);
  };
 
