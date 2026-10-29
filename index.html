@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="te">
 <head>
@@ -186,9 +187,8 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <script>
 const STORAGE_KEY="apSandOrders_v1";
 
-/* కొత్త QR తెరిచే వెబ్‌సైట్ లింక్ */
-const REGISTRATION_URL =
-"https://chashok1629-tech.github.io/Sand---billing-/";
+const REGISTRATION_PAGE =
+"https://chashok1629-tech.github.io/Sand---billing-/registration.html";
 
 const fieldIds=[
  "order","trip","customer","mobile","quantity","supply","date",
@@ -310,13 +310,39 @@ function updateBill(){
  });
 }
 
-/* పాత QR స్థానంలో కొత్త వెబ్‌సైట్ లింక్ QR */
+/* నమోదు చేసిన 8 Registration వివరాలను QR లింక్‌లో చేర్చడం */
 function makeQR(callback){
  const section=document.getElementById("billQR");
  section.innerHTML="";
 
+ const ids=[
+  "regId",
+  "consumerName",
+  "consumerMobile",
+  "constructionName",
+  "regDateTime",
+  "regType",
+  "regQty",
+  "regAddress"
+ ];
+
+ const params=new URLSearchParams();
+
+ ids.forEach(function(id){
+  const el=document.getElementById(id);
+  let value=el ? el.value.trim() : "";
+
+  if(id==="regDateTime" && value){
+   value=formatDate(value);
+  }
+
+  params.set(id,value);
+ });
+
+ const link=REGISTRATION_PAGE+"?"+params.toString();
+
  const img=document.createElement("img");
- img.alt="AP Sand Billing QR Code";
+ img.alt="Registration Details QR Code";
 
  img.onload=function(){
   const thanks=document.createElement("div");
@@ -328,15 +354,13 @@ function makeQR(callback){
  };
 
  img.onerror=function(){
-  section.innerHTML="";
-  alert("QR కోడ్ తయారు కాలేదు. ఇంటర్నెట్ తనిఖీ చేయండి.");
+  section.innerHTML="QR Code తయారు కాలేదు. Internet తనిఖీ చేయండి.";
   if(typeof callback==="function")callback(false);
  };
 
  img.src=
-  "https://api.qrserver.com/v1/create-qr-code/"+
-  "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
-  encodeURIComponent(REGISTRATION_URL);
+  "https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
+  encodeURIComponent(link);
 
  section.appendChild(img);
 }
