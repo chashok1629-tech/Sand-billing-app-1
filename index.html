@@ -4,106 +4,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Registration Details - AP Sand</title>
+<title>AP Sand Management System</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;padding:15px;
-  font-family:Arial,sans-serif;
-  background:#f1f3f5;color:#111
-}
-.container{
-  max-width:520px;margin:15px auto;
-  padding:20px;background:#fff;
-  border-radius:8px;
-  box-shadow:0 2px 8px #ccc
-}
-.header{text-align:center;border-bottom:2px solid #1769aa;padding-bottom:12px}
-.header h2{font-size:21px;margin:5px}
-.header p{margin:5px;font-size:14px}
-h3{font-size:17px;text-align:center}
-.item{
-  display:grid;grid-template-columns:43% 5% 52%;
-  gap:0;padding:11px 0;
-  border-bottom:1px solid #ddd;
-  font-size:14px;overflow-wrap:anywhere
-}
-.value{font-weight:bold;overflow-wrap:anywhere}
-.status{text-align:center;padding:20px;font-weight:bold}
-button{
-  width:100%;padding:12px;margin-top:15px;
-  border:0;border-radius:5px;background:#1769aa;
-  color:white;font-size:15px
+body{font-family:Arial,sans-serif;background:#eee;color:#000;margin:0;padding:12px}
+.form{max-width:520px;margin:auto;background:white;padding:15px;border-radius:8px}
+h2{text-align:center;font-size:21px;margin:5px}
+h3{text-align:center;font-size:17px}
+label{display:block;font-size:14px;font-weight:bold;margin-top:10px}
+input,textarea,select{width:100%;padding:10px;margin-top:4px;border:1px solid #aaa;border-radius:4px;font-size:15px}
+button{width:100%;padding:12px;margin-top:12px;font-size:16px;font-weight:bold;border:0;border-radius:5px;background:#1769aa;color:white}
+button.secondary{background:#268342}
+.section{border-top:2px solid #ddd;margin-top:20px;padding-top:10px}
+#bill{display:none}
+.receipt{width:72mm;margin:auto;font-family:"Courier New",monospace;font-size:11px;font-weight:bold;overflow-wrap:anywhere}
+.head{text-align:center;position:relative;padding:3px 0 7px}
+.head img{width:45px;height:45px;object-fit:contain;position:absolute;left:0;top:3px}
+.head .ap{font-size:16px}
+.head .management{font-size:12px}
+.copytitle{text-align:center;font-size:13px;margin:4px 0}
+.line{border-top:1px dashed #000;margin:5px 0}
+.billrow{display:grid;grid-template-columns:40% 5% 55%;margin:3px 0;align-items:start}
+.billrow .value{text-align:right;overflow-wrap:anywhere}
+.addressrow{display:block}
+.addressrow .value{text-align:left;margin-top:3px}
+.qr-area{text-align:center;margin:8px 0}
+.qr-area img{width:1in!important;height:1in!important}
+.qr-area canvas{width:1in!important;height:1in!important}
+.thanks{text-align:center;margin:5px 0}
+@media print{
+ @page{size:76mm auto;margin:0}
+ body{padding:0;margin:0;background:white}
+ .form{display:none!important}
+ #bill{display:block!important}
+ .receipt{width:72mm;padding:2mm 1mm;margin:0 auto}
+ .copy{break-inside:avoid}
 }
 </style>
 </head>
 
 <body>
-<div class="container">
-  <div class="header">
-    <h2>AP SAND</h2>
-    <p>MANAGEMENT SYSTEM</p>
-    <p>Registration Information</p>
-  </div>
 
-  <div id="status" class="status">Loading Registration Details...</div>
-  <div id="details"></div>
+<div class="form">
+<h2>AP SAND MANAGEMENT SYSTEM</h2>
+<h3>Sand Bill Entry</h3>
 
-  <button onclick="window.print()">Print Details</button>
+<div class="section">
+<label>Order ID</label>
+<input id="orderId">
+
+<label>Trip Number</label>
+<input id="tripNumber">
+
+<label>Customer Name</label>
+<input id="customerName">
+
+<label>Customer Mobile No</label>
+<input id="customerMobile" inputmode="numeric">
+
+<label>Sand Quantity (Tonnes)</label>
+<input id="sandQty" type="number" step="any">
+
+<label>Sand Supply Point Name</label>
+<input id="supplyPoint">
+
+<label>Dispatch Date</label>
+<input id="dispatchDate" type="datetime-local">
+
+<label>Driver Name</label>
+<input id="driverName">
+
+<label>Driver Mobile Number</label>
+<input id="driverMobile" inputmode="numeric">
+
+<label>Vehicle Number</label>
+<input id="vehicleNumber">
+
+<label>Address</label>
+<textarea id="address"></textarea>
+</div>
+
+<div class="section">
+<h3>Registration Details (for QR)</h3>
+
+<label>Registration ID</label>
+<input id="regId" required>
+
+<label>Consumer Name</label>
+<input id="regName">
+
+<label>Consumer Mobile No</label>
+<input id="regMobile" inputmode="numeric">
+
+<label>Construction Name</label>
+<input id="constructionName">
+
+<label>Registration Date &amp; Time</label>
+<input id="regDateTime" type="datetime-local">
+
+<label>Registration Type</label>
+<input id="regType">
+
+<label>Registration QTY (in MT)</label>
+<input id="regQty" type="number" step="any">
+
+<label>Registration Address</label>
+<textarea id="regAddress"></textarea>
+</div>
+
+<button type="button" onclick="previewBill()">Preview Bill / Generate QR</button>
+<button type="button" class="secondary" onclick="saveOrder()">Save Order Details</button>
+<button type="button" onclick="printBill()">Print 3-inch Bill / PDF</button>
+<button type="button" onclick="clearForm()">New Bill / Clear Form</button>
+<p id="message"></p>
+</div>
+
+<div id="bill">
+<div class="receipt">
+
+<div class="copy">
+<div class="head">
+<img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+onerror="this.style.display='none'">
+<div class="ap">AP SAND</div>
+<div class="management">MANAGEMENT SYSTEM</div>
+</div>
+<div class="copytitle">CONSUMER COPY</div>
+<div class="line"></div>
+<div id="consumerRows"></div>
+</div>
+
+<div class="line"></div>
+
+<div class="copy">
+<div class="head">
+<img src="./3840px-Emblem_of_Andhra_Pradesh.svg.png"
+onerror="this.style.display='none'">
+<div class="ap">AP SAND</div>
+<div class="management">MANAGEMENT SYSTEM</div>
+</div>
+<div class="copytitle">DRIVER COPY</div>
+<div class="line"></div>
+<div id="driverRows"></div>
+</div>
+
+<div class="line"></div>
+<div class="qr-area">
+<div id="qrcode" style="display:inline-block"></div>
+<div class="thanks">Thank You</div>
+</div>
+
+</div>
 </div>
 
 <script>
+const BASE_URL =
+"https://chashok1629-tech.github.io/Sand---billing-/";
+
+const billFields = [
+["Order ID","orderId"],
+["Trip Number","tripNumber"],
+["Customer Name","customerName"],
+["Customer Mobile No","customerMobile"],
+["Sand Quantity","sandQty","Tons"],
+["Sand Supply Point","supplyPoint"],
+["Dispatch Date","dispatchDate"],
+["Driver Name","driverName"],
+["Driver Mobile","driverMobile"],
+["Vehicle Number","vehicleNumber"],
+["Address","address"]
+];
+
+const registrationFields = [
+["Registration ID","regId"],
+["Consumer Name","regName"],
+["Consumer Mobile No","regMobile"],
+["Construction Name","constructionName"],
+["Registration Date & Time","regDateTime"],
+["Registration Type","regType"],
+["Registration QTY","regQty","MT"],
+["Registration Address","regAddress"]
+];
+
+function getValue(id){
+  const el=document.getElementById(id);
+  return el ? el.value.trim() : "";
+}
+
+function formatDate(value){
+  if(!value) return "";
+  const d=new Date(value);
+  if(isNaN(d.getTime())) return value;
+  const pad=n=>String(n).padStart(2,"0");
+  let hours=d.getHours();
+  const ampm=hours>=12?"PM":"AM";
+  hours=hours%12||12;
+  return pad(d.getDate())+"-"+pad(d.getMonth()+1)+"-"+
+    d.getFullYear()+" "+pad(hours)+":"+
+    pad(d.getMinutes())+":"+pad(d.getSeconds())+" "+ampm;
+}
+
+function rowHTML(label,id,unit){
+  let value=getValue(id);
+  if(id==="dispatchDate") value=formatDate(value);
+  if(id==="regDateTime") value=formatDate(value);
+  if(unit && value) value+=" "+unit;
+
+  if(id==="address" || id==="regAddress"){
+    return '<div class="billrow addressrow"><div>'+label+
+      ':</div><div class="value">'+escapeHTML(value)+'</div></div>';
+  }
+
+  return '<div class="billrow"><div>'+label+
+    '</div><div>:</div><div class="value">'+
+    escapeHTML(value)+'</div></div>';
+}
+
 function escapeHTML(s){
-  return String(s ?? "").replace(/[&<>"']/g,c=>({
+  return String(s).replace(/[&<>"']/g,c=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",
     '"':"&quot;","'":"&#39;"
   })[c]);
 }
 
-function showDetails(){
-  const status=document.getElementById("status");
-  const box=document.getElementById("details");
-
-  try{
-    const hash=location.hash;
-    const prefix="#data=";
-
-    if(!hash.startsWith(prefix)){
-      status.textContent="Registration Details link లో సమాచారం లేదు.";
-      return;
-    }
-
-    const raw=decodeURIComponent(hash.substring(prefix.length));
-    const data=JSON.parse(raw);
-
-    const fields=[
-      ["Registration ID",data.registrationId],
-      ["Consumer Name",data.consumerName],
-      ["Consumer Mobile No",data.consumerMobile],
-      ["Construction Name",data.constructionName],
-      ["Registration Date & Time",data.registrationDateTime],
-      ["Registration Type",data.registrationType],
-      ["Registration QTY (MT)",data.registrationQty],
-      ["Registration Address",data.registrationAddress]
-    ];
-
-    status.textContent="";
-    box.innerHTML="<h3>Registration Details</h3>";
-
-    fields.forEach(item=>{
-      box.innerHTML+=
-        '<div class="item"><div>'+escapeHTML(item[0])+
-        '</div><div>:</div><div class="value">'+
-        escapeHTML(item[1]||"-")+'</div></div>';
-    });
-  }catch(e){
-    status.textContent=
-      "వివరాలు తెరవలేకపోయాము. QR కోడ్‌ను మళ్లీ స్కాన్ చేయండి.";
-  }
+function getRegistrationData(){
+  return {
+    registrationId:getValue("regId"),
+    consumerName:getValue("regName"),
+    consumerMobile:getValue("regMobile"),
+    constructionName:getValue("constructionName"),
+    registrationDateTime:getValue("regDateTime")
+      ?formatDate(getValue("regDateTime")):"",
+    registrationType:getValue("regType"),
+    registrationQty:getValue("regQty"),
+    registrationAddress:getValue("regAddress")
+  };
 }
 
-showDetails();
+function makeQR(){
+  const data=getRegistrationData();
+
+  if(!data.registrationId){
+    alert("Registration ID నమోదు చేయండి.");
+    document.getElementById("regId").focus();
+    return false;
+  }
+
+  /*
+    Details are carried in the URL fragment.
+    No Firebase database is needed for this method.
+  */
+  const target=BASE_URL+"details1.html#data="+
+    encodeURIComponent(JSON.stringify(data));
+
+  const box=document.getElementById("qrcode");
+  box.innerHTML="";
+
+  if(typeof QRCode==="undefined"){
+    alert("QR library load కాలేదు. Internet connection తనిఖీ చేయండి.");
+    return false;
+  }
+
+  new QRCode(box,{
+    text:target,
+    width:192,
+    height:192,
+    correctLevel:QRCode.CorrectLevel.M
+  });
+
+  return true;
+}
+
+function previewBill(){
+  document.getElementById("consumerRows").innerHTML=
+    billFields.map(f=>rowHTML(f[0],f[1],f[2])).join("");
+
+  document.getElementById("driverRows").innerHTML=
+    billFields.map(f=>rowHTML(f[0],f[1],f[2])).join("");
+
+  if(!makeQR()) return;
+
+  document.getElementById("bill").style.display="block";
+  document.getElementById("message").textContent=
+    "Bill మరియు QR సిద్ధంగా ఉన్నాయి.";
+}
+
+function printBill(){
+  if(!document.getElementById("qrcode").querySelector("canvas") &&
+     !document.getElementById("qrcode").querySelector("img")){
+    previewBill();
+    if(!document.getElementById("qrcode").querySelector("canvas") &&
+       !document.getElementById("qrcode").querySelector("img")) return;
+  }
+  window.print();
+}
+
+function saveOrder(){
+  const id=getValue("orderId");
+  if(!id){
+    alert("Order ID నమోదు చేయండి.");
+    return;
+  }
+
+  const record={};
+  document.querySelectorAll(".form input,.form textarea").forEach(el=>{
+    record[el.id]=el.value;
+  });
+
+  let orders={};
+  try{orders=JSON.parse(localStorage.getItem("apSandOrders_v1")||"{}")}catch(e){}
+  orders[id]=record;
+  localStorage.setItem("apSandOrders_v1",JSON.stringify(orders));
+
+  document.getElementById("message").textContent=
+    "Order వివరాలు ఈ ఫోన్‌లో సేవ్ అయ్యాయి.";
+}
+
+document.getElementById("orderId").addEventListener("change",function(){
+  let orders={};
+  try{orders=JSON.parse(localStorage.getItem("apSandOrders_v1")||"{}")}catch(e){}
+  const record=orders[this.value];
+  if(!record) return;
+  Object.keys(record).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value=record[id];
+  });
+  document.getElementById("message").textContent="Order వివరాలు లోడ్ అయ్యాయి.";
+});
+
+function clearForm(){
+  if(!confirm("అన్ని ఫీల్డులు ఖాళీ చేయాలా?")) return;
+  document.querySelectorAll(".form input,.form textarea").forEach(el=>el.value="");
+  document.getElementById("qrcode").innerHTML="";
+  document.getElementById("bill").style.display="none";
+  document.getElementById("message").textContent="";
+}
 </script>
+
 </body>
 </html>
