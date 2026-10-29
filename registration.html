@@ -1,1 +1,62 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP Sand - Registration Details</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f2f2f2;margin:0;padding:15px;color:#111}
+.container{max-width:500px;margin:auto;background:white;padding:20px;border:1px solid #ccc;border-radius:8px}
+h2{text-align:center;color:#075b32;margin-bottom:4px}
+.heading{text-align:center;font-weight:bold;margin-top:0}
+h3{text-align:center;color:#075b32;border-bottom:2px solid #075b32;padding-bottom:10px}
+.item{padding:12px 0;border-bottom:1px solid #ddd;overflow-wrap:anywhere}
+.label{display:block;font-weight:bold;margin-bottom:5px}
+.value{display:block;font-size:16px;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>AP SAND</h2>
+<p class="heading">MANAGEMENT SYSTEM</p>
+<h3>Registration Details</h3>
+
+<div class="item"><span class="label">Registration ID</span><span class="value" id="regId">-</span></div>
+<div class="item"><span class="label">Consumer Name</span><span class="value" id="consumerName">-</span></div>
+<div class="item"><span class="label">Consumer Mobile No</span><span class="value" id="consumerMobile">-</span></div>
+<div class="item"><span class="label">Construction Name</span><span class="value" id="constructionName">-</span></div>
+<div class="item"><span class="label">Registration Date &amp; Time</span><span class="value" id="regDateTime">-</span></div>
+<div class="item"><span class="label">Registration Type</span><span class="value" id="regType">-</span></div>
+<div class="item"><span class="label">Registration QTY (in MT)</span><span class="value" id="regQty">-</span></div>
+<div class="item"><span class="label">Registration Address</span><span class="value" id="regAddress">-</span></div>
+</div>
+
+<script>
+const params=new URLSearchParams(window.location.search);
+const ids=[
+"regId","consumerName","consumerMobile","constructionName",
+"regDateTime","regType","regQty","regAddress"
+];
+
+let found=false;
+
+ids.forEach(function(id){
+ const value=params.get(id);
+ if(value!==null && value!==""){
+  document.getElementById(id).textContent=value;
+  found=true;
+ }
+});
+
+if(!found){
+ document.querySelector(".container").insertAdjacentHTML(
+  "beforeend",
+  "<p style='text-align:center;color:#b00020'>Registration details were not received. Please scan the QR code on the bill.</p>"
+ );
+}
+</script>
+</body>
+                                                            </html>
+                                                            
