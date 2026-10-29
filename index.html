@@ -14,7 +14,7 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 .form label{display:block;margin-top:10px;font-size:15px;font-weight:bold}
 .form input,.form textarea{width:100%;padding:10px;margin-top:4px;border:1px solid #777;border-radius:4px;font-size:16px}
 .form button{width:100%;padding:12px;margin-top:12px;border:0;border-radius:4px;background:#176ca5;color:white;font-size:16px;font-weight:bold}
-#status{text-align:center;margin-top:8px;color:#176ca5;font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+#status{text-align:center;margin-top:8px;color:#176ca5;font-size:13px;font-weight:bold}
 
 #receipt{width:100%;max-width:400px;margin:auto;background:white;color:black;font-family:"Courier New",monospace;font-weight:700}
 .copy{width:100%;padding:5px;margin:0;background:white}
@@ -98,7 +98,7 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
 <h3>Registration Details (for QR)</h3>
 
 <label>Registration ID</label>
-<input id="regId" placeholder="Enter Registration ID" required>
+<input id="regId" placeholder="Enter Registration ID">
 
 <label>Consumer Name</label>
 <input id="consumerName" placeholder="Enter Consumer Name">
@@ -173,23 +173,22 @@ body{margin:0;padding:10px;background:#eee;color:#000;font-family:Arial,sans-ser
     <div class="row"><div class="label-text">Sand Supply Point Name</div><div class="colon">:</div><span class="value-text" id="s2">-</span></div>
     <div class="row"><div class="label-text">Dispatch Date</div><div class="colon">:</div><span class="value-text" id="d2">-</span></div>
     <div class="row"><div class="label-text">Driver Name</div><div class="colon">:</div><span class="value-text" id="dr2">-</span></div>
-    <div class="row"><div class="label-text">Driver Mobile No</div><div class="colon">:</div><span class="value-text" id="dm2">-</span></div>
+    <div class="row"><div class="colon">:</div><div class="label-text">Driver Mobile No</div><span class="value-text" id="dm2">-</span></div>
     <div class="row"><div class="label-text">Vehicle No</div><div class="colon">:</div><span class="value-text" id="v2">-</span></div>
     <div class="address-row"><div class="label-text">Address</div><div class="colon">:</div><span class="value-text" id="a2">-</span></div>
     <div class="line"></div>
   </div>
 
-  <div id="billQR"></div>
+  <div id="billQR">
+    <div id="qrThanks">Thank You</div>
+  </div>
 </div>
 
 <script>
-const STORAGE_KEY="apSandOrders_v1";
+const STORAGE_KEY = "apSandOrders_v1";
+const REGISTRATION_URL = "https://chashok1629-tech.github.io/Sand---billing-/details1.html";
 
-/* మీ GitHub Pages Registration Details పేజీ */
-const DETAILS_PAGE =
-"https://chashok1629-tech.github.io/Sand---billing-/details1.html";
-
-const fieldIds=[
+const fieldIds = [
  "order","trip","customer","mobile","quantity","supply","date",
  "driver","driverMobile","vehicle","address","regId","consumerName",
  "consumerMobile","constructionName","regDateTime","regType","regQty",
@@ -197,89 +196,91 @@ const fieldIds=[
 ];
 
 function getOrders(){
- try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}
- catch(e){return {}}
+ try {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+ } catch(e) {
+  return {};
+ }
 }
 
 function getValue(id){
- const el=document.getElementById(id);
- return el ? el.value.trim()||"-" : "-";
+ const el = document.getElementById(id);
+ return el ? el.value.trim() || "-" : "-";
 }
 
 function put(id,value){
- document.getElementById(id).textContent=value;
+ document.getElementById(id).textContent = value;
 }
 
 function setStatus(message){
- document.getElementById("status").textContent=message;
+ document.getElementById("status").textContent = message;
 }
 
 function formatDate(value){
- if(!value||value==="-")return "-";
- const dt=new Date(value);
- if(isNaN(dt.getTime()))return value;
+ if(!value || value === "-") return "-";
+ const dt = new Date(value);
+ if(isNaN(dt.getTime())) return value;
 
- const day=String(dt.getDate()).padStart(2,"0");
- const month=String(dt.getMonth()+1).padStart(2,"0");
- const year=dt.getFullYear();
- let hours=dt.getHours();
- const minutes=String(dt.getMinutes()).padStart(2,"0");
- const seconds=String(dt.getSeconds()).padStart(2,"0");
- const ampm=hours>=12?"PM":"AM";
- hours=hours%12||12;
+ const day = String(dt.getDate()).padStart(2,"0");
+ const month = String(dt.getMonth()+1).padStart(2,"0");
+ const year = dt.getFullYear();
+ let hours = dt.getHours();
+ const minutes = String(dt.getMinutes()).padStart(2,"0");
+ const seconds = String(dt.getSeconds()).padStart(2,"0");
+ const ampm = hours >= 12 ? "PM" : "AM";
+ hours = hours % 12 || 12;
 
  return day+"-"+month+"-"+year+" "+
  String(hours).padStart(2,"0")+":"+minutes+":"+seconds+" "+ampm;
 }
 
 function collectData(){
- const data={};
- fieldIds.forEach(id=>{
-  data[id]=document.getElementById(id).value;
+ const data = {};
+ fieldIds.forEach(id => {
+  data[id] = document.getElementById(id).value;
  });
  return data;
 }
 
 function fillForm(data){
- fieldIds.forEach(id=>{
-  document.getElementById(id).value=
-   data[id]!==undefined?data[id]:"";
+ fieldIds.forEach(id => {
+  document.getElementById(id).value =
+   data[id] !== undefined ? data[id] : "";
  });
  updateBill();
 }
 
-function saveCurrent(showMessage=true){
- const order=document.getElementById("order").value.trim();
-
+function saveCurrent(showMessage = true){
+ const order = document.getElementById("order").value.trim();
  if(!order){
   setStatus("ముందుగా Order ID నమోదు చేయండి.");
   return false;
  }
 
- try{
-  const orders=getOrders();
-  orders[order]=collectData();
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(orders));
-  if(showMessage)setStatus("Order "+order+" వివరాలు సేవ్ అయ్యాయి.");
+ try {
+  const orders = getOrders();
+  orders[order] = collectData();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  if(showMessage) setStatus("Order "+order+" వివరాలు సేవ్ అయ్యాయి.");
   return true;
- }catch(e){
+ } catch(e) {
   setStatus("సేవ్ కాలేదు. బ్రౌజర్ స్టోరేజ్ తనిఖీ చేయండి.");
   return false;
  }
 }
 
 function loadOrder(){
- const order=document.getElementById("order").value.trim();
- if(!order)return;
+ const order = document.getElementById("order").value.trim();
+ if(!order) return;
 
- const orders=getOrders();
+ const orders = getOrders();
 
  if(orders[order]){
   fillForm(orders[order]);
   setStatus("Order "+order+" పాత వివరాలు వచ్చాయి.");
- }else{
-  fieldIds.filter(id=>id!=="order").forEach(id=>{
-   document.getElementById(id).value="";
+ } else {
+  fieldIds.filter(id => id !== "order").forEach(id => {
+   document.getElementById(id).value = "";
   });
   updateBill();
   setStatus("కొత్త Order ID. వివరాలు నమోదు చేయండి.");
@@ -287,7 +288,7 @@ function loadOrder(){
 }
 
 function updateBill(){
- const fields=[
+ const fields = [
   ["order","o1","o2"],
   ["trip","t1","t2"],
   ["customer","c1","c2"],
@@ -301,61 +302,67 @@ function updateBill(){
   ["address","a1","a2"]
  ];
 
- fields.forEach(f=>{
-  let value=getValue(f[0]);
-  if(f[0]==="quantity"&&value!=="-")value+=" Tons";
-  if(f[0]==="date")value=formatDate(value);
+ fields.forEach(f => {
+  let value = getValue(f[0]);
+  if(f[0] === "quantity" && value !== "-") value += " Tons";
+  if(f[0] === "date") value = formatDate(value);
   put(f[1],value);
   put(f[2],value);
  });
 }
 
-/* Registration ID ఆధారంగా QR తయారీ */
+/* Registration వివరాలతో QR తయారీ */
 function makeQR(callback){
- const regId=document.getElementById("regId").value.trim();
+ const regId = document.getElementById("regId").value.trim();
 
  if(!regId){
-  setStatus("QR కోసం Registration ID తప్పనిసరిగా నమోదు చేయండి.");
+  setStatus("దయచేసి Registration ID నమోదు చేయండి.");
   document.getElementById("regId").focus();
-  if(callback)callback(false);
+  if(callback) callback(false);
   return;
  }
 
- const section=document.getElementById("billQR");
- section.innerHTML="";
+ const registration = {
+  regId: regId,
+  consumerName: document.getElementById("consumerName").value.trim(),
+  consumerMobile: document.getElementById("consumerMobile").value.trim(),
+  constructionName: document.getElementById("constructionName").value.trim(),
+  regDateTime: document.getElementById("regDateTime").value,
+  regType: document.getElementById("regType").value.trim(),
+  regQty: document.getElementById("regQty").value.trim(),
+  regAddress: document.getElementById("regAddress").value.trim()
+ };
 
- /*
-  * QR లో Registration ID మాత్రమే URL parameter గా ఉంటుంది.
-  * వివరాలను details1.html Firebase నుంచి చదువుతుంది.
-  */
- const qrURL=new URL(DETAILS_PAGE);
- qrURL.searchParams.set("regId",regId);
+ const url = new URL(REGISTRATION_URL);
+ Object.entries(registration).forEach(([key,value]) => {
+  url.searchParams.set(key,value);
+ });
 
- const img=document.createElement("img");
- img.alt="Registration Details QR Code";
- img.width=350;
- img.height=350;
- img.style.cssText=
-  "display:block;width:1in;height:1in;max-width:1in;object-fit:contain;margin:0 auto";
+ const section = document.getElementById("billQR");
+ section.innerHTML = "";
 
- img.onload=function(){
-  const thanks=document.createElement("div");
-  thanks.id="qrThanks";
-  thanks.textContent="Thank You";
+ const img = document.createElement("img");
+ img.alt = "Registration Details QR Code";
+
+ img.onload = function(){
+  const thanks = document.createElement("div");
+  thanks.id = "qrThanks";
+  thanks.textContent = "Thank You";
   section.appendChild(thanks);
-  if(callback)callback(true);
+  setStatus("Registration ID "+regId+" కోసం QR సిద్ధమైంది.");
+  if(callback) callback(true);
  };
 
- img.onerror=function(){
-  section.innerHTML="";
-  setStatus("QR తయారు కాలేదు. ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేయండి.");
-  if(callback)callback(false);
+ img.onerror = function(){
+  section.innerHTML = "";
+  setStatus("QR తయారు కాలేదు. Internet తనిఖీ చేయండి.");
+  if(callback) callback(false);
  };
 
- img.src=
-  "https://api.qrserver.com/v1/create-qr-code/"+
-  "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data="+
-  encodeURIComponent(qrURL.href);
+ img.src =
+  "https://api.qrserver.com/v1/create-qr-code/" +
+  "?size=350x350&margin=1&color=000000&bgcolor=ffffff&data=" +
+  encodeURIComponent(url.href);
 
  section.appendChild(img);
 }
@@ -364,9 +371,6 @@ function previewBill(){
  updateBill();
  makeQR(function(success){
   if(success){
-   setStatus("బిల్ సిద్ధమైంది. QR స్కాన్ చేస్తే "+ 
-    document.getElementById("regId").value.trim()+
-    " వివరాలు తెరుచుకుంటాయి.");
    document.getElementById("receipt").scrollIntoView({
     behavior:"smooth",block:"start"
    });
@@ -376,21 +380,20 @@ function previewBill(){
 
 function printBill(){
  updateBill();
-
- if(!saveCurrent(false))return;
+ if(!saveCurrent(true)) return;
 
  makeQR(function(success){
-  if(success)window.print();
+  if(success) window.print();
  });
 }
 
 function resetForm(){
- if(!confirm("కొత్త బిల్ ప్రారంభించాలా? సేవ్ చేసిన Orders తొలగవు."))return;
+ if(!confirm("కొత్త బిల్ ప్రారంభించాలా? సేవ్ చేసిన Orders తొలగవు.")) return;
 
  document.querySelectorAll("#entryForm input,#entryForm textarea")
- .forEach(el=>el.value="");
+ .forEach(el => el.value = "");
 
- document.getElementById("billQR").innerHTML="";
+ document.getElementById("billQR").innerHTML = "";
  updateBill();
  setStatus("కొత్త బిల్ కోసం Order ID నమోదు చేయండి.");
  document.getElementById("order").focus();
@@ -398,15 +401,15 @@ function resetForm(){
 
 document.getElementById("order").addEventListener("change",loadOrder);
 document.getElementById("order").addEventListener("blur",loadOrder);
-document.getElementById("order").addEventListener("keydown",e=>{
- if(e.key==="Enter"){
+document.getElementById("order").addEventListener("keydown",e => {
+ if(e.key === "Enter"){
   e.preventDefault();
   loadOrder();
  }
 });
 
-fieldIds.filter(id=>id!=="order").forEach(id=>{
- const el=document.getElementById(id);
+fieldIds.filter(id => id !== "order").forEach(id => {
+ const el = document.getElementById(id);
  el.addEventListener("input",updateBill);
  el.addEventListener("change",updateBill);
 });
